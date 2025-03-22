@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, Box, Button } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import { Link } from "react-router-dom"; 
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -10,7 +11,14 @@ const Navbar = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const navItems = ["Home", "Listings", "Buy", "Rent", "Shortlist", "Agents"];
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "Listings", path: "/listings" },
+    { name: "Buy", path: "/buy" },
+    { name: "Rent", path: "/rent" },
+    { name: "Shortlist", path: "/shortlet" },  // Ensure correct path
+    { name: "Agents", path: "/agents" },
+  ];
 
   return (
     <>
@@ -26,7 +34,9 @@ const Navbar = () => {
             <Box sx={{ display: { xs: "none", md: "flex" }, gap: 3 }}>
               {navItems.map((item) => (
                 <Typography key={item} sx={{ cursor: "pointer", fontSize: "1rem" }}>
-                  {item}
+                  <Link to={item.path} style={{ textDecoration: "none", color: "inherit" }}>
+                    {item.name}
+                  </Link>
                 </Typography>
               ))}
             </Box>
