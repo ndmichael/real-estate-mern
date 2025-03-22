@@ -10,7 +10,7 @@ const Navbar = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const navItems = ["Home", "Listings", "Buy", "Agents"];
+  const navItems = ["Home", "Listings", "Buy", "Rent", "Shortlist", "Agents"];
 
   return (
     <>
