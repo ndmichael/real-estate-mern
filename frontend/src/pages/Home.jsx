@@ -1,6 +1,9 @@
 import React from 'react';
 import HeroSection from '../components/HeroSection';
 import FeaturedListings from '../components/FeaturedListings';
+import HowItWorks from '../components/HowItWorks';
+import Testimonials from '../components/Testimonial';
+import MarketTrends from '../components/MarketTrends';
 
 const Home = () => {
     return (
@@ -10,6 +13,14 @@ const Home = () => {
 
             {/* Featured Listing */}
             <FeaturedListings />
+
+            {/** How it works section */}
+            <HowItWorks />
+
+            {/** Testimonials */}
+            <Testimonials />
+
+            <MarketTrends />
         </>
     );
 };
