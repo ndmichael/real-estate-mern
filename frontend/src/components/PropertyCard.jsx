@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardMedia, Typography, Box } from "@mui/material";
 import BathtubIcon from "@mui/icons-material/Bathtub";
 import BedIcon from "@mui/icons-material/Bed";
@@ -5,7 +6,24 @@ import WcIcon from "@mui/icons-material/Wc";
 
 const PropertyCard = ({ property }) => {
   return (
-    <Card sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, width: "100%", mb: 2, boxShadow: 3 }}>
+    <Card 
+      component={Link}
+      to={`/property/${property.id}`}
+      sx={{ 
+          display: "flex", 
+          flexDirection: { xs: "column", sm: "row" }, 
+          width: "100%", mb: 2, boxShadow: 3 ,
+          textDecoration: "none",
+          color: "inherit",
+          cursor: "pointer",
+          transition: "background-color 0.3s ease",
+          "&:hover": {
+            backgroundColor: "#f0f0f0", // Light gray background on hover
+            color: "inherit"
+          },
+          
+        }}
+    >
       {/* Property Image */}
       <CardMedia
         component="img"
