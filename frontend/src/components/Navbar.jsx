@@ -44,8 +44,8 @@ const Navbar = () => {
 
           {/* Right Section: Auth Buttons */}
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
-            <Button variant="outlined" color="success">Login</Button>
-            <Button variant="contained" color="success">Sign Up</Button>
+            <Button component={Link} to="/login" variant="outlined" color="success">Login</Button>
+            <Button component={Link} to="/signup" variant="contained" color="success">Sign Up</Button>
           </Box>
 
           {/* Mobile Menu Button */}
