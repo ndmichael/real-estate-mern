@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Box, Typography,  Button, Card, CardContent } from "@mui/material";
 import Grid from '@mui/material/Grid2';
-import { TrendingUp, Email, Visibility, Star } from "@mui/icons-material";
+import { Chat, Star, FormatListBulletedOutlined, Visibility } from "@mui/icons-material";
 import DashboardLayout from "../../layouts/DashboardLayout";
+import DashboardCard from "../../components/dashboard/DashboardCard";
 
 const AgentDashboard = () => {
   const [listings, setListings] = useState({ free: 3, featured: 2, total: 5 });
@@ -17,41 +18,45 @@ const AgentDashboard = () => {
         </Typography>
         
         {/* Overview Cards */}
-        <Grid container spacing={3}>
+        <Grid container spacing={2}>
           <Grid size={{xs:12, sm:6, md:3}}>
-            <Card sx={{ boxShadow: 3, backgroundColor: "#f5f5f5" }}>
-              <CardContent>
-                <Typography variant="h6">Total Listings</Typography>
-                <Typography variant="h4" color="primary">{listings.total}</Typography>
-              </CardContent>
-            </Card>
+            <DashboardCard 
+                title="Total Listings"
+                count={listings.total} // Dynamic
+                icon={<FormatListBulletedOutlined />}
+                link="/agent/dashboard"
+                backgroundColor="#f5f5f5"
+            />
           </Grid>
           
           <Grid size={{xs:12, sm:6, md:3}}>
-            <Card sx={{ boxShadow: 3, backgroundColor: "#e0f7fa" }}>
-              <CardContent>
-                <Typography variant="h6">Featured Listings</Typography>
-                <Typography variant="h4" color="secondary">{listings.featured}</Typography>
-              </CardContent>
-            </Card>
+            <DashboardCard 
+                title="Featured Listings"
+                count={listings.featured} // Dynamic
+                icon={<Star />}
+                link="/agent/dashboard"
+                backgroundColor= "#e0f7fa"
+            />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ boxShadow: 3, backgroundColor: "#fbe9e7" }}>
-              <CardContent>
-                <Typography variant="h6">Leads & Messages</Typography>
-                <Typography variant="h4" color="success.main">{leads}</Typography>
-              </CardContent>
-            </Card>
+          <Grid size={{xs:12, sm:6, md:3}}>
+            <DashboardCard
+                title="Leads & Messages"
+                count={leads} // Dynamic
+                icon={<Chat />}
+                link="/agent/dashboard"
+                backgroundColor= "#fbe9e7"
+            />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ boxShadow: 3, backgroundColor: "#fff3e0" }}>
-              <CardContent>
-                <Typography variant="h6">Total Views</Typography>
-                <Typography variant="h4" color="text.primary">{views}</Typography>
-              </CardContent>
-            </Card>
+          <Grid size={{xs:12, sm:6, md:3}}>
+            <DashboardCard 
+                title="Total Views"
+                count={views} // Dynamic
+                icon={<Visibility />}
+                link="/agent/dashboard"
+                backgroundColor="#fff3e0"
+            />
           </Grid>
         </Grid>
         
