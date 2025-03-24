@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { Box, TextField, Button, Typography } from "@mui/material";
@@ -6,7 +6,7 @@ import { Box, TextField, Button, Typography } from "@mui/material";
 const EditProperty = () => {
   const { id } = useParams();
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
-  const [loading, setLoading] = useState(true);
+//   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -19,7 +19,7 @@ const EditProperty = () => {
         setValue("price", data.price);
         setValue("location", data.location);
 
-        setLoading(false);
+        // setLoading(false);
       } catch (error) {
         console.error("Error fetching property:", error);
       }
