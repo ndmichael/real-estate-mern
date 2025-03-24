@@ -4,12 +4,16 @@ import FeaturedListings from '../components/FeaturedListings';
 import HowItWorks from '../components/HowItWorks';
 import Testimonials from '../components/Testimonial';
 import MarketTrends from '../components/MarketTrends';
+import FeaturedListingCarousel from '../components/FeaturedListingCarousel';
 
 const Home = () => {
     return (
         <>
             {/* Hero section */}
             <HeroSection />
+
+            {/* Featured Listing Carousel */}
+            <FeaturedListingCarousel />
 
             {/* Featured Listing */}
             <FeaturedListings />
