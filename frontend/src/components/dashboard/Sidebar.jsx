@@ -57,6 +57,7 @@ const Sidebar = ({ role }) => {
     client: [
       { text: "Dashboard", icon: <Home />, path: "/client/dashboard" },
       { text: "Saved Properties", icon: <ListAlt />, path: "/client/saved-properties" },
+      { text: "inquiries", icon: <Person />, path: "/client/inquiries" },
       { text: "Profile", icon: <Person />, path: "/client/profile" },
     ],
     admin: [
