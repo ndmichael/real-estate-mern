@@ -17,6 +17,12 @@ import MyListings from './pages/agents/MyListings';
 import AddProperty from './pages/agents/AddProperty';
 import EditProperty from './pages/agents/EditProperty';
 
+// Client import 
+import ClientDashboard from './pages/clients/ClientDashboard';
+import Inquires from './pages/clients/Inquires';
+import ProfileSettings from './pages/clients/ProfileSettings';
+import SavedProperties from './pages/clients/SaveProperties';
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 
@@ -78,6 +84,12 @@ function App() {
             <Route path="/agent/mylistings" element={<MyListings />} />
             <Route path="/agent/property/add" element={<AddProperty />} />
             <Route path="/agent/property/edit" element={<EditProperty />} />
+
+            {/* Client Routes */}
+            <Route path="/client/dashboard" element={<ClientDashboard />} />
+            <Route path="/client/saved-properties" element={<SavedProperties />} />
+            <Route path="/client/property/inquiries" element={<Inquires />} />
+            <Route path="/client/property/profile" element={<ProfileSettings />} />
           </Routes>
         </LayoutWrapper>
       </ThemeProvider>
