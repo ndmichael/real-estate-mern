@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography} from "@mui/material";
 import { Link } from "react-router-dom";
+import Grid from '@mui/material/Grid2';
 import axios from "axios";
-import PropertyCard from "../../components/PropertyCard"; // Adjust path if needed
+import PropertyCard from "../../components/PropertyCardHorizontal"; // Adjust path if needed
+import properties from "../../data/properties";
 
 const MyListings = () => {
   const [listings, setListings] = useState([]);
@@ -38,11 +40,11 @@ const MyListings = () => {
         My Listings
       </Typography>
 
-      <Grid container spacing={3}>
-        {listings.map((listing) => (
-          <Grid item xs={12} sm={6} md={4} key={listing._id}>
+      <Grid container spacing={4}>
+        {properties.map((listing) => (
+          <Grid size={{xs:12, sm:6, md:4}} key={listing.id}>
             <PropertyCard
-              listing={listing}
+              property={listing}
               showActions={true} // If your PropertyCard supports actions
               onEdit={`/agent/edit-property/${listing._id}`}
               onDelete={() => handleDelete(listing._id)}
