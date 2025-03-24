@@ -1,0 +1,43 @@
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Environment variables
+.env
+
+# Logs
+logs
+*.log
+logs/
+debug.log
+nohup.out
+trace.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+
+# Build files
+dist/
+build/
+coverage/
+
+# Dependencies
+*.tgz
+
+# Process IDs
+pids/
+*.pid
+*.seed
+
+# Miscellaneous
+*.zip
+*.tar.gz
+*.bak
