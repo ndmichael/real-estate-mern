@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Box, Typography, Grid, Button, Card, CardContent } from "@mui/material";
+import { Box, Typography,  Button, Card, CardContent } from "@mui/material";
+import Grid from '@mui/material/Grid2';
 import { TrendingUp, Email, Visibility, Star } from "@mui/icons-material";
 import DashboardLayout from "../../layouts/DashboardLayout";
 
@@ -17,7 +18,7 @@ const AgentDashboard = () => {
         
         {/* Overview Cards */}
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{xs:12, sm:6, md:3}}>
             <Card sx={{ boxShadow: 3, backgroundColor: "#f5f5f5" }}>
               <CardContent>
                 <Typography variant="h6">Total Listings</Typography>
@@ -26,7 +27,7 @@ const AgentDashboard = () => {
             </Card>
           </Grid>
           
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{xs:12, sm:6, md:3}}>
             <Card sx={{ boxShadow: 3, backgroundColor: "#e0f7fa" }}>
               <CardContent>
                 <Typography variant="h6">Featured Listings</Typography>
