@@ -1,7 +1,7 @@
 import { Box, Typography, Paper } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Favorite, Message, Home } from "@mui/icons-material";
-import PropertyCard from "../../components/PropertyCard";
+import DashboardCard from "../../components/dashboard/DashboardCard";
 
 const ClientDashboard = () => {
   return (
@@ -10,9 +10,9 @@ const ClientDashboard = () => {
         Welcome Back, Client!
       </Typography>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={3} justifyContent="center">
         <Grid size={{xs:12, sm:4}}>
-          <PropertyCard
+          <DashboardCard
             title="Saved Properties"
             count={8} // Dynamic
             icon={<Favorite fontSize="large" color="error" />}
@@ -21,7 +21,7 @@ const ClientDashboard = () => {
         </Grid>
 
         <Grid size={{xs:12, sm:4}}>
-          <PropertyCard
+          <DashboardCard
             title="Inquiries"
             count={5} // Dynamic
             icon={<Message fontSize="large" color="primary" />}
@@ -30,7 +30,7 @@ const ClientDashboard = () => {
         </Grid>
 
         <Grid size={{xs:12, sm:4}}>
-          <PropertyCard
+          <DashboardCard
             title="Bookings"
             count={2} // Dynamic
             icon={<Home fontSize="large" color="success" />}
