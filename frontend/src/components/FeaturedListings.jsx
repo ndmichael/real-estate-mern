@@ -1,5 +1,7 @@
-import {Typography, Container, Box } from "@mui/material";
+import { Link } from "react-router-dom";
+import {Typography, Container, Box, Button } from "@mui/material";
 import Grid from '@mui/material/Grid2';
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
 import PropertyCard from "./PropertyCard";
 
@@ -55,26 +57,38 @@ const FeaturedListings = () => {
     },
   ];
 
+  
+
   return (
     <Container sx={{ my: 5,  width: "100%" }}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom sx={{mb: 4}}>
-        Featured Listings
-      </Typography>
+      {/* Header with Title and "See All" Button */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+      <Typography variant="h5" fontWeight="bold">
+          New Listings
+        </Typography>
+        <Button
+          component={Link}
+          to="/listings"
+          color="success" // Green color
+          sx={{ 
+            textTransform: "none", 
+            fontWeight: "bold",
+            display: "flex", 
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          View All <ArrowRightAltIcon />
+        </Button>
+      </Box>
+
       <Grid container spacing={4}>
         {featuredProperties.map((property) => (
           <Grid size={{xs:12, sm:6, md:6}}  key={property.id}>
             <PropertyCard property={property} />
           </Grid>
         ))}
-      </Grid>
-
-      <Grid>
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-          <ViewMoreButton/>
-        </Box>
-      </Grid>
-
-      
+      </Grid> 
     </Container>
   );
 };
