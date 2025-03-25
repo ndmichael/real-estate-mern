@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const InquirySchema = new mongoose.Schema(
     {
       property: { type: mongoose.Schema.Types.ObjectId, ref: "Property", required: true },
@@ -9,5 +11,6 @@ const InquirySchema = new mongoose.Schema(
     { timestamps: true }
   );
   
-  module.exports = mongoose.model("Inquiry", InquirySchema);
+  const Inquiry = mongoose.model("Subscription", InquirySchema);
+  export default Inquiry;
   

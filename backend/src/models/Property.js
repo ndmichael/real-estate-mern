@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const PropertySchema = new mongoose.Schema(
     {
       agent: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to Agent
@@ -25,5 +27,6 @@ const PropertySchema = new mongoose.Schema(
     { timestamps: true }
   );
   
-  module.exports = mongoose.model("Property", PropertySchema);
+  const Property = mongoose.model("Property", PropertySchema);
+  export default Property;
   

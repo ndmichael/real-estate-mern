@@ -1,6 +1,6 @@
 import express from "express";
-import { createProperty, getAllProperties } from "../controllers/propertyController.js";
-import { protect, authorize } from "../middlewares/authMiddleware.js";
+import { createProperty, getAllProperties, getMyProperties } from "../controllers/propertyController.js";
+import { protect, authorize } from "../middlewares/authMiddlewares.js";
 
 const router = express.Router();
 
