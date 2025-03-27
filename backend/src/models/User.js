@@ -9,7 +9,9 @@ const UserSchema = new mongoose.Schema(
     phone: { type: String, required: true },
     role: { type: String, enum: ["client", "agent", "admin"], required: true },
     profileImage: { type: String }, // Cloudinary URL or File Path
+    
     isVerified: { type: Boolean, default: false }, // Admin verifies agents
+    isActive: { type: Boolean, default: false }, // General users
 
     savedListings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Property" }], // Wishlist for Clients
 
