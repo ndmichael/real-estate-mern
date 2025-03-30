@@ -4,21 +4,43 @@ import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, phone, role } = req.body;
+    const { firstName, lastName, email, password, phone, role, companyName, licenseNumber } = req.body;
 
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: "User already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-      phone,
-      role,
-      isActive: true
-    });
+
+    let newUser;
+
+    if (role === "client") {
+      newUser = await User.create({
+        firstName,
+        lastName,
+        email,
+        password: hashedPassword,
+        phone,
+        role,
+        isActive: true, // Clients are active immediately
+      });
+    } else if (role === "agent") {
+      newUser = await User.create({
+        firstName,
+        lastName,
+        email,
+        password: hashedPassword,
+        phone,
+        role,
+        agentDetails: {
+          companyName,
+          licenseNumber,
+        },
+        isVerified: false, // Admin must verify agents
+        isActive: false, // Agents shouldn't be active until verification
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid role specified" });
+    }
 
     const token = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
@@ -27,6 +49,7 @@ export const registerUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 export const loginUser = async (req, res) => {
   try {
