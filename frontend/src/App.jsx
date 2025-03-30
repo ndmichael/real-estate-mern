@@ -25,6 +25,8 @@ import SavedProperties from './pages/clients/SaveProperties';
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+import PrivateRoute from "./routes/PrivateRoute";
+
 
 // Create a theme to disable hover styles
 const theme = createTheme({
@@ -80,16 +82,22 @@ function App() {
             <Route path="/signup" element={<Signup />} />
 
             {/* Agent Routes */}
-            <Route path="/agent/dashboard" element={<AgentDashboard />} />
-            <Route path="/agent/mylistings" element={<MyListings />} />
-            <Route path="/agent/property/add" element={<AddProperty />} />
-            <Route path="/agent/property/edit" element={<EditProperty />} />
+            <Route element={<PrivateRoute allowedRoles={["agent"]} />}>
+              <Route path="/agent/dashboard" element={<AgentDashboard />} />
+              <Route path="/agent/mylistings" element={<MyListings />} />
+              <Route path="/agent/property/add" element={<AddProperty />} />
+              <Route path="/agent/property/edit" element={<EditProperty />} />
+            </Route>
+            
 
             {/* Client Routes */}
-            <Route path="/client/dashboard" element={<ClientDashboard />} />
-            <Route path="/client/saved-properties" element={<SavedProperties />} />
-            <Route path="/client/property/inquiries" element={<Inquires />} />
-            <Route path="/client/property/profile" element={<ProfileSettings />} />
+            <Route element={<PrivateRoute allowedRoles={["client"]} />}>
+              <Route path="/client/dashboard" element={<ClientDashboard />} />
+              <Route path="/client/saved-properties" element={<SavedProperties />} />
+              <Route path="/client/property/inquiries" element={<Inquires />} />
+              <Route path="/client/property/profile" element={<ProfileSettings />} />
+            </Route>
+            
           </Routes>
         </LayoutWrapper>
       </ThemeProvider>
