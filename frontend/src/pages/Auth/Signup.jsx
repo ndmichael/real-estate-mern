@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, registerUser } from "../../redux/authSlice";
+
+
 import {
   Box,
   Typography,
@@ -12,8 +16,12 @@ import {
 import Grid from '@mui/material/Grid2'
 
 const Signup = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => state.auth);
+
   const [userType, setUserType] = useState(""); // "agent" or "client"
-  const [loading, setLoading] = useState(false); // Loading state
+
   const {
     register,
     handleSubmit,
@@ -23,14 +31,15 @@ const Signup = () => {
 
   const password = watch("password", ""); // Watch password for confirm validation
 
-  const onSubmit = (data) => {
-    setLoading(true); // Start loading
-
-    // Simulate API call (Replace with actual API request)
-    setTimeout(() => {
-      console.log("User Data:", data);
-      setLoading(false); // Stop loading after "backend" response
-    }, 2000);
+  const onSubmit = async (data) => {
+    const userData = { ...data, role: userType }; // Add role dynamically
+    const result = await dispatch(registerUser(userData));
+    if (result.meta.requestStatus === "fulfilled") {
+      localStorage.setItem("token", result.payload.token); // Store token
+      dispatch(loginUser(result.payload.token));
+      navigate(userType === "client" ? "/client/dashboard" : "/agent/dashboard"); // Use absolute paths
+    }
+        
   };
 
   return (
@@ -73,10 +82,20 @@ const Signup = () => {
                 <Grid size={{xs:12, sm:6}}>
                   <TextField
                     fullWidth
-                    label="Full Name"
-                    {...register("fullName", { required: "Full name is required" })}
-                    error={!!errors.fullName}
-                    helperText={errors.fullName?.message}
+                    label="First Name"
+                    {...register("firstName", { required: "First name is required" })}
+                    error={!!errors.firstName}
+                    helperText={errors.firstName?.message}
+                  />
+                </Grid>
+
+                <Grid size={{xs:12, sm:6}}>
+                  <TextField
+                    fullWidth
+                    label="Last Name"
+                    {...register("lastName", { required: "Last name is required" })}
+                    error={!!errors.lastName}
+                    helperText={errors.lastName?.message}
                   />
                 </Grid>
 
@@ -136,6 +155,7 @@ const Signup = () => {
 
                 {/* Company Name (Only for Agents) */}
                 {userType === "agent" && (
+
                   <Grid size={{xs:12, sm:6}}>
                     <TextField
                       fullWidth
@@ -145,6 +165,21 @@ const Signup = () => {
                       helperText={errors.companyName?.message}
                     />
                   </Grid>
+                )}
+
+                {/* Company Name (Only for Agents) */}
+                {userType === "agent" && (
+
+                  <Grid size={{xs:12, sm:6}}>
+                    <TextField
+                      fullWidth
+                      label="License Number"
+                      {...register("licenseNumber", { required: "License Number is required for agents" })}
+                      error={!!errors.licenseNumber}
+                      helperText={errors.licenseNumber?.message}
+                    />
+                  </Grid>
+
                 )}
               </Grid>
 
@@ -172,6 +207,7 @@ const Signup = () => {
                 </Link>
               </Typography>
             </form>
+            {error && <p style={{ color: "red" }}>{error}</p>}
           </>
         )}
       </Paper>

@@ -1,47 +1,58 @@
-import React from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { TextField, Button, Box, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-
-// Validation Schema for Login
-const loginSchema = yup.object({
-  email: yup.string().email("Invalid email").required("Email is required"),
-  password: yup.string().required("Password is required"),
-});
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom"; // ✅ Import useNavigate
+import { loginUser } from "../../redux/authSlice";
+import { TextField, Button, Box, Typography, CircularProgress, Alert } from "@mui/material";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(loginSchema),
-  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); // ✅ Initialize navigation
+  const { loading, error, user } = useSelector((state) => state.auth);
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Login Data:", data);
-    // Backend authentication will determine role
-    const fakeUserRole = "agent"; // Simulated user role
+  const onSubmit = async (data) => {
+    const result = await dispatch(loginUser(data));
 
-    if (fakeUserRole === "admin") {
-      navigate("/admin-dashboard");
-    } else if (fakeUserRole === "agent") {
-      navigate("/agent-dashboard");
-    } else {
-      navigate("/client-dashboard");
+    if (result.meta.requestStatus === "fulfilled") {
+      navigate(`/${user.user.role}/dashboard`); // ✅ Redirect based on role
     }
   };
 
   return (
-    <Box sx={{ maxWidth: 400, mx: "auto", my: 8 }}>
-      <Typography variant="h5" mb={2}>Login</Typography>
+    <Box sx={{ width: 350, mx: "auto", mt: 5, p: 3, boxShadow: 3, borderRadius: 2 }}>
+      <Typography variant="h5" fontWeight="bold" mb={2} textAlign="center">Login</Typography>
+      
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      
       <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField label="Email" type="email" fullWidth margin="normal" {...register("email")} error={!!errors.email} helperText={errors.email?.message} />
-        <TextField label="Password" type="password" fullWidth margin="normal" {...register("password")} error={!!errors.password} helperText={errors.password?.message} />
-        <Button type="submit" variant="contained" color="success" fullWidth sx={{ mt: 2 }}>Login</Button>
+        <TextField
+          label="Email"
+          fullWidth
+          {...register("email", { required: "Email is required" })}
+          error={!!errors.email}
+          helperText={errors.email?.message}
+          sx={{ mb: 2 }}
+        />
+        
+        <TextField
+          label="Password"
+          type="password"
+          fullWidth
+          {...register("password", { required: "Password is required" })}
+          error={!!errors.password}
+          helperText={errors.password?.message}
+          sx={{ mb: 2 }}
+        />
+
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          sx={{ bgcolor: "green", "&:hover": { bgcolor: "darkgreen" } }}
+          disabled={loading}
+        >
+          {loading ? <CircularProgress size={24} color="inherit" /> : "Login"}
+        </Button>
       </form>
     </Box>
   );
