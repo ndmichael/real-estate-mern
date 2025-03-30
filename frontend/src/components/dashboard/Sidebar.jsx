@@ -34,6 +34,8 @@ import {
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
+import LogoutButton from '../../components/LogoutButton';
+
 
 
 const Sidebar = ({ role }) => {
@@ -95,7 +97,7 @@ const Sidebar = ({ role }) => {
       <List>
         <ListItem button>
           <ListItemIcon><Logout /></ListItemIcon>
-          {isOpen && <ListItemText primary="Logout" />}
+          {isOpen && <LogoutButton />}
         </ListItem>
       </List>
     </Drawer>
