@@ -4,7 +4,8 @@ import {
     getAllProperties, 
     getMyProperties, 
     updateProperty,
-    deleteProperty 
+    deleteProperty,
+    getPropertyById 
 } from "../controllers/propertyController.js";
 import { protect, authorize } from "../middlewares/authMiddlewares.js";
 
@@ -15,5 +16,6 @@ router.get("/", getAllProperties); // Agents see their own listings, others see 
 router.get("/my-listings", protect, authorize("agent"), getMyProperties);
 router.put("/:id", protect, authorize("agent"), updateProperty); // Update property
 router.delete("/:id", protect, authorize("agent"), deleteProperty); // Delete property
+router.get("/:id", getPropertyById);
 
 export default router;
