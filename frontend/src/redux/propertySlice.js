@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
+import { toast } from "react-toastify";
 
 export const fetchProperties = createAsyncThunk(
     'property/fetchProperties',
@@ -59,8 +59,10 @@ export const fetchProperties = createAsyncThunk(
     async (propertyData, { rejectWithValue }) => {
       try {
         const response = await axios.post('http://localhost:5000/api/properties', propertyData);
+        toast.error("Property Added !");
         return response.data;
       } catch (error) {
+        toast.error("Failed to add property");
         return rejectWithValue(error.response?.data?.message || 'Failed to add property');
       }
     }
@@ -80,10 +82,11 @@ export const fetchProperties = createAsyncThunk(
           },
         };
         const response = await axios.put(`http://localhost:5000/api/properties/${id}`, propertyData, config);
-        console.log("Updating Property:", id, propertyData);
+        toast.success("Property updated successfully!");
 
         return response.data;
       } catch (error) {
+        toast.error("Failed to update property");
         return rejectWithValue(error.response?.data?.message || 'Failed to update property');
       }
     }
@@ -105,8 +108,10 @@ export const fetchProperties = createAsyncThunk(
         };
 
         await axios.delete(`http://localhost:5000/api/properties/${id}`, config);
+        toast.error("Property deleted successfully !");
         return id;
       } catch (error) {
+        toast.error("Failed to delete property");
         return rejectWithValue(error.response?.data?.message || 'Failed to delete property');
       }
     }
