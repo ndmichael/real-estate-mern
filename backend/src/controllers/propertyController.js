@@ -42,7 +42,7 @@ export const createProperty = async (req, res) => {
       return res.status(400).json({ message: "You can upload a maximum of 4 images." });
     }
 
-    // ✅ Create property
+    // Create property
     const property = await Property.create({
       agent: req.user.id, // Associate property with logged-in agent
       title,
@@ -83,7 +83,8 @@ export const getMyProperties = async (req, res) => {
       return res.status(403).json({ message: "Access denied: Only agents can view their own listings." });
     }
 
-    const properties = await Property.find({ agent: req.user.id }).populate("agent", "firstName lastName email");
+    const properties = await Property.find({ agent: req.user._id }).populate("agent", "firstName lastName email");
+    console.log("Fetched Properties:", properties);
 
     res.json(properties);
   } catch (error) {
@@ -132,6 +133,22 @@ export const deleteProperty = async (req, res) => {
     res.status(200).json({ message: "Property deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting property", error: error.message });
+  }
+};
+
+
+// Public Route: Get a single property by ID
+export const getPropertyById = async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id).populate("agent", "firstName lastName email");
+
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    res.json(property);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching property", error: error.message });
   }
 };
 
