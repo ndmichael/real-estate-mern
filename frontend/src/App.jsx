@@ -27,6 +27,9 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import PrivateRoute from "./routes/PrivateRoute";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 // Create a theme to disable hover styles
 const theme = createTheme({
@@ -69,6 +72,7 @@ function App() {
 
   return (
     <Router>
+      <ToastContainer position="top-right" autoClose={3000} />
       <ThemeProvider theme={theme}>
         <LayoutWrapper>
           <Routes>
