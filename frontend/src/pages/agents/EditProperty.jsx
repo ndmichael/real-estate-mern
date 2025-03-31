@@ -98,7 +98,7 @@ const EditProperty = () => {
             </div>
           </Grid>
           <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary" fullWidth disabled={updating}>
+            <Button type="submit" variant="contained" color="success" fullWidth disabled={updating}>
               {updating ? <CircularProgress size={24} /> : "Update Property"}
             </Button>
           </Grid>
