@@ -1,11 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+import { toast } from "react-toastify";
+
 // Async Thunks for Register, Login, Logout
 export const registerUser = createAsyncThunk("auth/registerUser", async (userData, { rejectWithValue }) => {
   try {
     const response = await axios.post("http://localhost:5000/api/auth/register", userData);
     localStorage.setItem("user", JSON.stringify(response.data));
+
+    toast.success("Regsitration successful!");
+
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response?.data?.message || "Registration failed");
@@ -16,14 +21,19 @@ export const loginUser = createAsyncThunk("auth/loginUser", async (credentials, 
   try {
     const response = await axios.post("http://localhost:5000/api/auth/login", credentials);
     localStorage.setItem("user", JSON.stringify(response.data));
+
+    toast.success(`${response.data.user.firstName} have been logged in!`);
+
     return response.data;
   } catch (error) {
+    toast.success("login failed!");
     return rejectWithValue(error.response?.data?.message || "Login failed");
   }
 });
 
 export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
   localStorage.removeItem("user");
+  toast.info("You have been logout, please login");
   return null;
 });
 
