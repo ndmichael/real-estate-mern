@@ -1,58 +1,48 @@
-import { useState, useEffect } from "react";
-import { Box, Typography} from "@mui/material";
-import { Link } from "react-router-dom";
-import Grid from '@mui/material/Grid2';
-import axios from "axios";
-import PropertyCard from "../../components/PropertyCardHorizontal"; // Adjust path if needed
-import properties from "../../data/properties";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMyProperties, deleteProperty } from "../../redux/propertySlice";
+import { Container, Typography, Grid, Button, Box } from "@mui/material";
+import PropertyCardHorizontal from "../../components/PropertyCardHorizontal";
+import { useNavigate } from "react-router-dom";
 
 const MyListings = () => {
-  const [listings, setListings] = useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { myProperties=[], loading, error } = useSelector((state) => state.property || {});
 
-  useEffect(() => {
-    // Fetch agent's listings from backend
-    const fetchListings = async () => {
-      try {
-        const response = await axios.get("/api/agent/listings"); // Adjust API route
-        setListings(response.data);
-      } catch (error) {
-        console.error("Error fetching listings:", error);
-      }
-    };
+    useEffect(() => {
+        console.log("Dispatching fetchMyProperties..."); 
+        dispatch(fetchMyProperties());
+    }, [dispatch]);
 
-    fetchListings();
-  }, []);
-
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this listing?")) {
-      try {
-        await axios.delete(`/api/listings/${id}`);
-        setListings((prevListings) => prevListings.filter((listing) => listing._id !== id));
-      } catch (error) {
-        console.error("Error deleting listing:", error);
-      }
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this property?")) {
+      dispatch(deleteProperty(id));
     }
   };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
-        My Listings
+    <Container maxWidth="lg">
+      <Typography variant="h4" gutterBottom>
+        My Properties
       </Typography>
-
-      <Grid container spacing={4}>
-        {properties.map((listing) => (
-          <Grid size={{xs:12, sm:6, md:4}} key={listing.id}>
-            <PropertyCard
-              property={listing}
-              showActions={true} // If your PropertyCard supports actions
-              onEdit={`/agent/edit-property/${listing._id}`}
-              onDelete={() => handleDelete(listing._id)}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+      {loading ? (
+        <Typography>Loading...</Typography>
+      ) : (
+        <Grid container spacing={2}>
+          {myProperties.map((property) => (
+            <Grid item key={property.id} xs={12} sm={6} md={4}>
+              <PropertyCardHorizontal
+                property={property}
+                showActions
+                onEdit={() => navigate(`/agent/property/edit/${property._id}`)}
+                onDelete={() => handleDelete(property._id)}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      )}
+    </Container>
   );
 };
 
