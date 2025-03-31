@@ -86,7 +86,7 @@ function App() {
               <Route path="/agent/dashboard" element={<AgentDashboard />} />
               <Route path="/agent/mylistings" element={<MyListings />} />
               <Route path="/agent/property/add" element={<AddProperty />} />
-              <Route path="/agent/property/edit" element={<EditProperty />} />
+              <Route path="/agent/property/edit/:id" element={<EditProperty />} />
             </Route>
             
 
