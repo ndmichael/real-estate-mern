@@ -1,89 +1,110 @@
-import { useEffect} from "react";
-import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { updateProperty, fetchPropertyById } from "../../redux/propertySlice";
+import { useParams, useNavigate } from "react-router-dom";
+import { TextField, Button, MenuItem, Typography, Container, Grid, CircularProgress } from "@mui/material";
 
 const EditProperty = () => {
   const { id } = useParams();
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
-//   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { property, loading } = useSelector((state) => state.property);
+  const [imagePreview, setImagePreview] = useState([]);
+  const [updating, setUpdating] = useState(false);
+
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
-    const fetchProperty = async () => {
-      try {
-        const response = await fetch(`/api/listings/${id}`);
-        const data = await response.json();
+    dispatch(fetchPropertyById(id));
+  }, [dispatch, id]);
 
-        // Set form values
-        setValue("title", data.title);
-        setValue("price", data.price);
-        setValue("location", data.location);
-
-        // setLoading(false);
-      } catch (error) {
-        console.error("Error fetching property:", error);
-      }
-    };
-
-    fetchProperty();
-  }, [id, setValue]);
-
-  const onSubmit = async (data) => {
-    try {
-      const response = await fetch(`/api/listings/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        alert("Property updated successfully!");
-      } else {
-        console.error("Error updating property");
-      }
-    } catch (error) {
-      console.error("Error:", error);
+  useEffect(() => {
+    if (property) {
+      Object.keys(property).forEach((key) => setValue(key, property[key]));
+      setImagePreview(property.images || []);
     }
+  }, [property, setValue]);
+
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    setImagePreview(files.map((file) => URL.createObjectURL(file)));
   };
 
-//   if (loading) return <Typography>Loading...</Typography>;
+  const onSubmit = async (data) => {
+    setUpdating(true);
+    await dispatch(updateProperty({ id, propertyData: data}));
+    setUpdating(false);
+    navigate("/agent/mylistings");
+  };
 
   return (
-    <Box sx={{ p: 3, maxWidth: 500 }}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
+    <Container maxWidth="md">
+      <Typography variant="h4" gutterBottom>
         Edit Property
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          label="Title"
-          fullWidth
-          {...register("title", { required: "Title is required" })}
-          error={!!errors.title}
-          helperText={errors.title?.message}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Price"
-          type="number"
-          fullWidth
-          {...register("price", { required: "Price is required", min: 1 })}
-          error={!!errors.price}
-          helperText={errors.price?.message}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Location"
-          fullWidth
-          {...register("location", { required: "Location is required" })}
-          error={!!errors.location}
-          helperText={errors.location?.message}
-          sx={{ mb: 2 }}
-        />
-        <Button type="submit" variant="contained" color="primary" fullWidth>
-          Update Property
-        </Button>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Controller
+              name="title"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Title is required" }}
+              render={({ field }) => <TextField {...field} label="Title" fullWidth error={!!errors.title} helperText={errors.title?.message} />}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="description"
+              control={control}
+              defaultValue=""
+              render={({ field }) => <TextField {...field} label="Description" multiline rows={4} fullWidth />}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="price"
+              control={control}
+              defaultValue=""
+              render={({ field }) => <TextField {...field} label="Price" type="number" fullWidth />}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="category"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField {...field} select label="Category" fullWidth>
+                  <MenuItem value="buy">Buy</MenuItem>
+                  <MenuItem value="rent">Rent</MenuItem>
+                  <MenuItem value="shortlet">Shortlet</MenuItem>
+                </TextField>
+              )}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <input type="file" multiple accept="image/*" onChange={handleImageUpload} />
+            <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+              {imagePreview.map((src, index) => (
+                <img key={index} src={src} alt="Preview" width={100} height={100} style={{ objectFit: "cover" }} />
+              ))}
+            </div>
+          </Grid>
+          <Grid item xs={12}>
+            <Button type="submit" variant="contained" color="primary" fullWidth disabled={updating}>
+              {updating ? <CircularProgress size={24} /> : "Update Property"}
+            </Button>
+          </Grid>
+        </Grid>
       </form>
-    </Box>
+    </Container>
   );
 };
 
