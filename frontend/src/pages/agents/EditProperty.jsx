@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProperty, fetchPropertyById } from "../../redux/propertySlice";
 import { useParams, useNavigate } from "react-router-dom";
-import { TextField, Button, MenuItem, Typography, Container, Grid, CircularProgress } from "@mui/material";
+import { TextField, Button, MenuItem, Typography, Container, CircularProgress } from "@mui/material";
 import Grid from "@mui/material/Grid2"
 
 const EditProperty = () => {
@@ -43,6 +43,15 @@ const EditProperty = () => {
     setUpdating(false);
     navigate("/agent/mylistings");
   };
+
+  // Show loader while fetching property data
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <CircularProgress size={50} />
+      </Box>
+    );
+  }
 
   return (
     <Container maxWidth="md">

@@ -10,7 +10,9 @@ import {
   DialogContent, 
   DialogContentText, 
   DialogTitle, 
-  Button 
+  Button ,
+  Box,
+  CircularProgress
 } from "@mui/material";
 
 import PropertyCardHorizontal from "../../components/PropertyCardHorizontal";
@@ -54,7 +56,11 @@ const MyListings = () => {
         My Properties
       </Typography>
       {loading ? (
-        <Typography>Loading...</Typography>
+        <Box display="flex" justifyContent="center" alignItems="center" height="50vh">
+                <CircularProgress size={50} />
+                <Typography mr={2} pr={4}>Loading...</Typography>
+        </Box>
+        
       ) : (
         <Grid container spacing={2}>
           {myProperties.map((property) => (
