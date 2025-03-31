@@ -14,7 +14,7 @@ const Login = () => {
     const result = await dispatch(loginUser(data));
 
     if (result.meta.requestStatus === "fulfilled") {
-      navigate(`/${user.user.role}/dashboard`); // ✅ Redirect based on role
+      navigate(`/${result.payload.user.role}/dashboard`); // Redirect based on role
     }
   };
 
