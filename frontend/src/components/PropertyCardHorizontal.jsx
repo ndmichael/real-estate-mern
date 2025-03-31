@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
-import { Card, CardContent, CardMedia, Typography, Box, IconButton } from "@mui/material";
+import { Card, CardContent, CardMedia, Typography, Box, IconButton, Button } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import BathtubIcon from "@mui/icons-material/Bathtub";
 import BedIcon from "@mui/icons-material/Bed";
 import WcIcon from "@mui/icons-material/Wc";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-const PropertyCardHorizontal = ({ property }) => {
+const PropertyCardHorizontal = ({ property, showActions, onEdit, onDelete }) => {
   return (
     <Card
       component={Link}
@@ -30,7 +32,7 @@ const PropertyCardHorizontal = ({ property }) => {
           component="img"
           className="property-image"
           sx={{ height: 180, transition: "transform 0.3s ease-in-out" }}
-          image={property.image}
+          image={property.images[0]}
           alt={property.title}
         />
         
@@ -56,7 +58,7 @@ const PropertyCardHorizontal = ({ property }) => {
             {property.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {property.location}
+            {property.location.city}
           </Typography>
           <Typography variant="h6" color="green" sx={{ mt: 1 }}>
             NGN {property.price.toLocaleString()}
@@ -87,6 +89,18 @@ const PropertyCardHorizontal = ({ property }) => {
             <Typography variant="body2">{property.toilets} Toilets</Typography>
           </Box>
         </Box>
+
+        {/* Show Edit & Delete Buttons in Dashboard */}
+        {showActions && (
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+            <Button variant="outlined" startIcon={<EditIcon />} onClick={(e) => { e.preventDefault(); onEdit(); }}>
+              Edit
+            </Button>
+            <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={(e) => { e.preventDefault(); onDelete(); }}>
+              Delete
+            </Button>
+          </Box>
+        )}
       </CardContent>
     </Card>
   );
