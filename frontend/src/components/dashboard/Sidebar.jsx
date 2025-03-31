@@ -50,7 +50,6 @@ const Sidebar = ({ role }) => {
       { text: "Dashboard", icon: <DashboardIcon />, path: "/agent/dashboard" },
       { text: "My Listings", icon: <FormatListBulletedIcon />, path: "/agent/mylistings" },
       { text: "Add Property", icon: <AddHomeIcon />, path: "/agent/property/add" },
-      { text: "Edit Property", icon: <EditIcon />, path: "/agent/property/edit" },
       { text: "Leads & Messages", icon: <MessageIcon />, path: "/agent/messages" },
       { text: "Featured Listings", icon: <StarIcon />, path: "/agent/featured" },
       { text: "Reviews & Ratings", icon: <StarIcon />, path: "/agent/reviews" },
