@@ -1,12 +1,12 @@
 import { AppBar, Toolbar, Typography, IconButton, Avatar, Box } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const CustomAppBar = ({ title }) => {
-  const [user] = useState({ name: "John Doe", avatar: "/avatar.png" });
+  const { user } = useSelector((state) => state.auth); // Get user from Redux
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#1976D2" }}>
+    <AppBar position="static" sx={{ backgroundColor: "#4CAF50" }}>
       <Toolbar>
         <IconButton edge="start" color="inherit">
           <MenuIcon />
@@ -15,8 +15,8 @@ const CustomAppBar = ({ title }) => {
           {title}
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Typography>{user.name}</Typography>
-          <Avatar src={user.avatar} />
+          <Typography>{`${user.user.firstName} ${user.user.lastName}`}</Typography>
+          <Avatar src={user.user.image || "/default-avatar.png"} />
         </Box>
       </Toolbar>
     </AppBar>
