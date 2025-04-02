@@ -27,7 +27,7 @@ const FeaturedListingCarousel = () => {
         bedrooms: 3,
         bathrooms: 2,
         toilets: 3,
-        image: house1,
+        images: [house1],
       },
       {
         id: 2,
@@ -37,7 +37,7 @@ const FeaturedListingCarousel = () => {
         bedrooms: 2,
         bathrooms: 2,
         toilets: 2,
-        image: house2,
+        images: [house2],
       },
       {
         id: 3,
@@ -47,7 +47,7 @@ const FeaturedListingCarousel = () => {
         bedrooms: 4,
         bathrooms: 3,
         toilets: 4,
-        image: house3,
+        images: [house3],
       },
       {
         id: 4,
@@ -57,7 +57,7 @@ const FeaturedListingCarousel = () => {
         bedrooms: 5,
         bathrooms: 4,
         toilets: 5,
-        image: house1,
+        images: [house1],
       },
       {
         id: 3,
@@ -67,7 +67,7 @@ const FeaturedListingCarousel = () => {
         bedrooms: 4,
         bathrooms: 3,
         toilets: 4,
-        image: house3,
+        images: [house3],
       },
       {
         id: 4,
@@ -77,7 +77,7 @@ const FeaturedListingCarousel = () => {
         bedrooms: 5,
         bathrooms: 4,
         toilets: 5,
-        image: house1,
+        images: [house1],
       },
     ];
 
