@@ -1,5 +1,6 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Card, CardContent, CardMedia, Typography, Box, IconButton, Button, Tooltip } from "@mui/material";
+import { Card, CardContent, CardMedia, Typography, Box, IconButton, Button, Tooltip, CircularProgress } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BathtubIcon from "@mui/icons-material/Bathtub";
@@ -10,6 +11,9 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const PropertyCardHorizontal = ({ property, showActions, onEdit, onDelete, onToggleWishlist, isWishlisted }) => {
+  const { loadingIds } = useSelector((state) => state.auth);
+  const isLoading = loadingIds.includes(property._id); // Only check this property
+
   return (
     <Card
       sx={{
@@ -50,7 +54,14 @@ const PropertyCardHorizontal = ({ property, showActions, onEdit, onDelete, onTog
               "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.9)" },
             }}
           >
-            {isWishlisted ? <FavoriteIcon color="success" /> : <FavoriteBorderIcon />}
+            {isLoading ? (
+              <CircularProgress size={20} color="success" />
+            ) : isWishlisted ? (
+              <FavoriteIcon color="success" />
+            ) : (
+              <FavoriteBorderIcon />
+            )}
+            {/* {isWishlisted ? <FavoriteIcon color="success" /> : <FavoriteBorderIcon />} */}
           </IconButton>
         </Tooltip>
       </Box>
