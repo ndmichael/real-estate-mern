@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, Box, Button } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -6,6 +7,23 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const user = useSelector((state) => state.auth.user);
+
+  // Determine dashboard link based on user role
+  const getDashboardLink = () => {
+    if (!user) return "/login";
+    switch (user.user.role) {
+      case "admin":
+        return "/admin/dashboard";
+      case "agent":
+        return "/agent/dashboard";
+      case "client":
+        return "/client/dashboard";
+      default:
+        return "/login"; // Fallback
+    }
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -43,10 +61,25 @@ const Navbar = () => {
           </Box>
 
           {/* Right Section: Auth Buttons */}
-          <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
-            <Button component={Link} to="/login" variant="outlined" color="success">Login</Button>
-            <Button component={Link} to="/signup" variant="contained" color="success">Sign Up</Button>
-          </Box>
+          {
+            user?
+            (<Button
+              color="success"
+              variant="text"
+              component={Link}
+              to={getDashboardLink()}
+            >
+              {user.user.firstName} {user.user.lastName}
+            </Button>)
+            :(
+              <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
+                <Button component={Link} to="/login" variant="outlined" color="success">Login</Button>
+                <Button component={Link} to="/signup" variant="contained" color="success">Sign Up</Button>
+              </Box>
+            )
+
+          }
+          
 
           {/* Mobile Menu Button */}
           <IconButton
@@ -79,14 +112,26 @@ const Navbar = () => {
           </List>
 
           {/* Auth Buttons in Drawer */}
-          <Box sx={{ textAlign: "center", mt: 2 }}>
+          {
+            user?
+            (<Button
+            color="inherit"
+            component={Link}
+            to={getDashboardLink()}
+          >
+            {user.firstName} {user.lastName}
+          </Button>)
+          :
+          (<Box sx={{ textAlign: "center", mt: 2 }}>
             <Button variant="outlined" color="success" fullWidth sx={{ mb: 1 }}>
               Login
             </Button>
             <Button variant="contained" color="success" fullWidth>
               Sign Up
             </Button>
-          </Box>
+          </Box>)
+          }
+          
         </Box>
       </Drawer>
     </>
