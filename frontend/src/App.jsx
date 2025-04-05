@@ -34,26 +34,26 @@ import "react-toastify/dist/ReactToastify.css";
 // Create a theme to disable hover styles
 const theme = createTheme({
   components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          "&:hover": {
-            backgroundColor: "transparent", // No hover color
-          },
-        },
-      },
-    },
-    MuiIconButton: {
-      styleOverrides: {
-        root: {
-          color: "inherit",
-          "&:hover": {
-            backgroundColor: "transparent", // No hover color
-            color: "inherit"
-          },
-        },
-      },
-    },
+    // MuiButton: {
+    //   styleOverrides: {
+    //     root: {
+    //       "&:hover": {
+    //         backgroundColor: "transparent", // No hover color
+    //       },
+    //     },
+    //   },
+    // },
+    // MuiIconButton: {
+    //   styleOverrides: {
+    //     root: {
+    //       color: "inherit",
+    //       "&:hover": {
+    //         backgroundColor: "transparent", // No hover color
+    //         color: "inherit"
+    //       },
+    //     },
+    //   },
+    // },
     MuiCard: {
       styleOverrides: {
         root: {

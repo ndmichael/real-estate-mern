@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Typography, Box, Button } from "@mui/material";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -9,92 +9,45 @@ import "swiper/css/pagination";
 import PropertyCardHorizontal from "./PropertyCardHorizontal";
 import { Link } from "react-router-dom";
 
-// Images
-import house1 from '../assets/images/img1.webp'
-import house2 from '../assets/images/img2.webp'
-import house3 from '../assets/images/img3.webp'
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromWishlist, addToWishlist } from "../redux/authSlice";
+import { fetchProperties } from "../redux/propertySlice";
+
+// // Images
+// import house1 from '../assets/images/img1.webp'
+// import house2 from '../assets/images/img2.webp'
+// import house3 from '../assets/images/img3.webp'
 
 const FeaturedListingCarousel = () => {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user); 
+  const { properties = [], loading } = useSelector((state) => state.property || {});
+
+  const wishlist = useSelector((state) => state.auth.wishlist) || []; // Get wishlist directly from Redux
+
+  const handleWishlistToggle = (propertyId) => {
+    if (wishlist.includes(propertyId)) {
+      // If the property is already in the wishlist, remove it
+      console.log("remove wishlist triggered")
+      dispatch(removeFromWishlist(propertyId));
+    } else {
+      // If the property is not in the wishlist, add it
+      console.log("add wishlist triggered")
+      dispatch(addToWishlist(propertyId));
+    }
+  };
+
 //   const [properties, setProperties] = useState([]);
   const [swiperInstance, setSwiperInstance] = useState(null);
 
-  const featuredProperties = [
-      {
-        id: 1,
-        title: "Luxury 3 Bedroom Apartment",
-        location: "Lagos, Nigeria",
-        price: "250,000",
-        bedrooms: 3,
-        bathrooms: 2,
-        toilets: 3,
-        images: [house1],
-      },
-      {
-        id: 2,
-        title: "Modern 2 Bedroom Condo",
-        location: "Abuja, Nigeria",
-        price: "180,000",
-        bedrooms: 2,
-        bathrooms: 2,
-        toilets: 2,
-        images: [house2],
-      },
-      {
-        id: 3,
-        title: "Spacious 4 Bedroom Duplex",
-        location: "Kano, Nigeria",
-        price: "320,000",
-        bedrooms: 4,
-        bathrooms: 3,
-        toilets: 4,
-        images: [house3],
-      },
-      {
-        id: 4,
-        title: "Elegant 5 Bedroom Villa",
-        location: "Port Harcourt, Nigeria",
-        price: "500,000",
-        bedrooms: 5,
-        bathrooms: 4,
-        toilets: 5,
-        images: [house1],
-      },
-      {
-        id: 3,
-        title: "Spacious 4 Bedroom Duplex",
-        location: "Kano, Nigeria",
-        price: "320,000",
-        bedrooms: 4,
-        bathrooms: 3,
-        toilets: 4,
-        images: [house3],
-      },
-      {
-        id: 4,
-        title: "Elegant 5 Bedroom Villa",
-        location: "Port Harcourt, Nigeria",
-        price: "500,000",
-        bedrooms: 5,
-        bathrooms: 4,
-        toilets: 5,
-        images: [house1],
-      },
-    ];
-
-//   useEffect(() => {
-//     const featuredProperties = async () => {
-//       try {
-//         const res = await fetch("/api/properties/featured?limit=8"); // Fetch featured properties
-//         const data = await res.json();
-//         setProperties(data.properties);
-//       } catch (error) {
-//         console.error("Error fetching featured listings:", error);
-//       }
-//     };
-//     fetchProperties();
-//   }, []);
+  // Fetch properties when the component mounts
+  useEffect(() => {
+    dispatch(fetchProperties());
+  }, [dispatch]);
 
   return (
+
+
     <Container sx={{ py: 5, margin: "auto" }}>
 
       {/* Header with Title and "See All" Button */}
@@ -134,10 +87,14 @@ const FeaturedListingCarousel = () => {
         }}
         style={{ paddingBottom: "30px" }}
       >
-        {featuredProperties.map((property) => (
+        {properties.map((property) => (
           <SwiperSlide key={property._id}>
             <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
-              <PropertyCardHorizontal property={property} />
+              <PropertyCardHorizontal 
+                property={property} 
+                isWishlisted={wishlist.includes(property._id)} // Passing wishlist state
+                onToggleWishlist={() => handleWishlistToggle(property._id)} // Passing the handler
+              />
             </Box>
           </SwiperSlide>
         ))}
