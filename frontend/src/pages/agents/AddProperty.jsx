@@ -1,5 +1,5 @@
 import { useForm, Controller } from "react-hook-form";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { MuiFileInput } from "mui-file-input";
 import { useDispatch } from 'react-redux';
 import { addProperty } from '../../redux/propertySlice.js';
@@ -14,21 +14,44 @@ const AddProperty = () => {
   const dispatch = useDispatch();
   const [selectedImages, setSelectedImages] = useState([]);
   const [category, setCategory] = useState('');
+  const fileInputRef = useRef(null);
 
 
-  const onSubmit = (data) => {
-    const propertyData = {
-      ...data,
-      images: selectedImages,
-    };
+  const onSubmit = async (data) => {
+    const formData = new FormData();
 
-    dispatch(addProperty(propertyData));
+    // Append text fields
+    Object.keys(data).forEach((key) => {
+      if (key !== "images" && key !== "location") {
+        formData.append(key, data[key]);
+      }
+    });
 
-    alert('Property added successfully!');
+    // Append location object correctly
+    formData.append("location", JSON.stringify(data.location));
+
+    // Append images
+    // Append image files from `data.images`
+    if (Array.isArray(data.images)) {
+      data.images.forEach((image) => {
+        formData.append("images", image);
+      });
+    }
+
+    for (let pair of formData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+    
+
+    await dispatch(addProperty(formData));
+
+    alert("Property added successfully!");
     reset();
     setSelectedImages([]);
-    setCategory('');
+    setCategory("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
+
 
   // Handle category selection
   const handleCategoryChange = (_, newCategory) => {
