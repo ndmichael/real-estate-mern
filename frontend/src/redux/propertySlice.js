@@ -56,13 +56,23 @@ export const fetchProperties = createAsyncThunk(
 
   export const addProperty = createAsyncThunk(
     'property/addProperty',
-    async (propertyData, { rejectWithValue }) => {
+    async (propertyData, { rejectWithValue, getState }) => {
       try {
-        const response = await axios.post('http://localhost:5000/api/properties', propertyData);
-        toast.error("Property Added !");
+        // Retrieve the authentication token from the state
+        const token = getState().auth.user.token;
+        
+        // Configure the request headers with the token
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const response = await axios.post('http://localhost:5000/api/properties', propertyData, config);
+        toast.success("Property Added !");
         return response.data;
       } catch (error) {
         toast.error("Failed to add property");
+        console.log(error.response.data)
         return rejectWithValue(error.response?.data?.message || 'Failed to add property');
       }
     }
