@@ -1,4 +1,5 @@
 import Property from "../models/Property.js";
+import { uploadImages } from "../utils/cloudinaryUpload.js"; 
 
 
 export const createProperty = async (req, res) => {
@@ -13,6 +14,8 @@ export const createProperty = async (req, res) => {
       return res.status(403).json({ message: "Access denied: Only verified agents can post listings." });
     }
 
+    console.log('Request body:', req.body); // Check if form data is coming in properly
+
     // Extract property details from request body
     const {
       title,
@@ -22,9 +25,12 @@ export const createProperty = async (req, res) => {
       location,
       bedrooms,
       bathrooms,
-      toilets,
-      images,
+      toilets
     } = req.body;
+
+    // Extract uploaded images
+    const images = req.files; 
+    
 
     // Validate required fields
     if (!title || !description || !category || !price || !location || !bedrooms || !bathrooms || !toilets || !images) {
@@ -42,6 +48,8 @@ export const createProperty = async (req, res) => {
       return res.status(400).json({ message: "You can upload a maximum of 4 images." });
     }
 
+    const uploadedImages = await uploadImages(images);
+
     // Create property
     const property = await Property.create({
       agent: req.user.id, // Associate property with logged-in agent
@@ -49,11 +57,11 @@ export const createProperty = async (req, res) => {
       description,
       category,
       price,
-      location,
+      location: JSON.parse(location),
       bedrooms,
       bathrooms,
       toilets,
-      images,
+      images: uploadedImages,
       isAvailable: true, // Default availability
       isFeatured: false, // Default featured status
     });
