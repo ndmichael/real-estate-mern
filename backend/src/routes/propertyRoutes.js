@@ -1,4 +1,5 @@
 import express from "express";
+import upload from "../middlewares/uploadMiddleware.js"
 import { 
     createProperty, 
     getAllProperties, 
@@ -11,7 +12,7 @@ import { protect, authorize } from "../middlewares/authMiddlewares.js";
 
 const router = express.Router();
 
-router.post("/", protect, authorize("agent"), createProperty); // Only agents can create properties
+router.post("/", protect, authorize("agent"), upload.array('images', 4), createProperty); // Only agents can create properties
 router.get("/", getAllProperties); // Agents see their own listings, others see all
 router.get("/my-listings", protect, authorize("agent"), getMyProperties);
 router.put("/:id", protect, authorize("agent"), updateProperty); // Update property
