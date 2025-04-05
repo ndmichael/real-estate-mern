@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Box, Button } from "@mui/material";
+import { Container, Typography, Box, Button, CircularProgress } from "@mui/material";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
@@ -20,7 +20,6 @@ import { fetchProperties } from "../redux/propertySlice";
 
 const FeaturedListingCarousel = () => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.auth.user); 
   const { properties = [], loading } = useSelector((state) => state.property || {});
 
   const wishlist = useSelector((state) => state.auth.wishlist) || []; // Get wishlist directly from Redux
@@ -46,7 +45,6 @@ const FeaturedListingCarousel = () => {
   }, [dispatch]);
 
   return (
-
 
     <Container sx={{ py: 5, margin: "auto" }}>
 
@@ -97,7 +95,8 @@ const FeaturedListingCarousel = () => {
               />
             </Box>
           </SwiperSlide>
-        ))}
+        ))
+        }
       </Swiper>
 
       {/* Back & Next Buttons */}
