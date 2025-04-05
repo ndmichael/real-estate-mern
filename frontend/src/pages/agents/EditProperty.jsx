@@ -3,7 +3,15 @@ import { useForm, Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProperty, fetchPropertyById } from "../../redux/propertySlice";
 import { useParams, useNavigate } from "react-router-dom";
-import { TextField, Button, MenuItem, Typography, Container, CircularProgress } from "@mui/material";
+import { 
+  TextField, 
+  Button, 
+  MenuItem, 
+  Typography, 
+  Container, 
+  CircularProgress,
+  Box
+} from "@mui/material";
 import Grid from "@mui/material/Grid2"
 
 const EditProperty = () => {
