@@ -77,7 +77,9 @@ export const createProperty = async (req, res) => {
 // Public Route: Get all properties (Everyone sees all)
 export const getAllProperties = async (req, res) => {
   try {
-    const properties = await Property.find().populate("agent", "firstName lastName email");
+    const properties = await Property.find()
+                      .populate("agent", "firstName lastName email")
+                      .sort({ createdAt: -1 }) ;
     res.json(properties);
   } catch (error) {
     res.status(500).json({ message: "Error fetching properties", error });
@@ -91,8 +93,9 @@ export const getMyProperties = async (req, res) => {
       return res.status(403).json({ message: "Access denied: Only agents can view their own listings." });
     }
 
-    const properties = await Property.find({ agent: req.user._id }).populate("agent", "firstName lastName email");
-    console.log("Fetched Properties:", properties);
+    const properties = await Property.find({ agent: req.user._id })
+    .populate("agent", "firstName lastName email")
+    .sort({ createdAt: -1 }) ;
 
     res.json(properties);
   } catch (error) {
@@ -100,27 +103,64 @@ export const getMyProperties = async (req, res) => {
   }
 };
 
-// Update Property (Only by the agent who created it)
+
 export const updateProperty = async (req, res) => {
   try {
     const property = await Property.findById(req.params.id);
+    if (!property) return res.status(404).json({ message: 'Property not found' });
 
-    if (!property) {
-      return res.status(404).json({ message: "Property not found" });
-    }
-
-    // Check if the logged-in agent is the owner of the property
     if (property.agent.toString() !== req.user.id) {
-      return res.status(403).json({ message: "Access denied: You can only update your own properties." });
+      return res.status(403).json({ message: 'Access denied' });
     }
 
-    const updatedProperty = await Property.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const {
+      title,
+      description,
+      category,
+      price,
+      bedrooms,
+      bathrooms,
+      toilets,
+      isAvailable,
+    } = req.body;
 
-    res.status(200).json({ message: "Property updated successfully", updatedProperty });
+    // Parse location and filesToDelete from JSON
+    const location = req.body.location ? JSON.parse(req.body.location) : {};
+    const filesToDelete = req.body.filesToDelete ? JSON.parse(req.body.filesToDelete) : [];
+
+    // Step 1: Remove unwanted images
+    property.images = property.images.filter((img) => !filesToDelete.includes(img));
+
+    // Step 2: Upload new images if present
+    if (req.files && req.files.length > 0) {
+      const uploadedImageUrls = await uploadImages(req.files);
+      property.images.push(...uploadedImageUrls);
+    }
+
+    // Step 3: Update fields
+    if (title) property.title = title;
+    if (description) property.description = description;
+    if (category) property.category = category;
+    if (price) property.price = price;
+    if (location) property.location = location;
+    if (bedrooms) property.bedrooms = bedrooms;
+    if (bathrooms) property.bathrooms = bathrooms;
+    if (toilets) property.toilets = toilets;
+    if (isAvailable !== undefined) property.isAvailable = isAvailable === 'true';
+
+    const updatedProperty = await property.save();
+
+    res.status(200).json({
+      message: 'Property updated successfully',
+      updatedProperty,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error updating property", error: error.message });
+    console.error('Error updating property:', error);
+    res.status(500).json({ message: 'Update failed', error: error.message });
   }
 };
+
+
 
 // Delete Property (Only by the agent who created it)
 export const deleteProperty = async (req, res) => {
