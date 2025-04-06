@@ -2,7 +2,7 @@ import cloudinary from '../config/cloudinaryConfig.js'; // make sure this path i
 
 export const uploadImages = async (imageFiles) => {
   try {
-    // ✅ Add log here to verify cloudinary is properly imported
+    // Add log here to verify cloudinary is properly imported
     console.log('cloudinary is:', cloudinary);
 
     const imageUrls = await Promise.all(
