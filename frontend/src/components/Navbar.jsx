@@ -35,7 +35,7 @@ const Navbar = () => {
     { name: "Buy", path: "/buy" },
     { name: "Rent", path: "/rent" },
     { name: "Shortlist", path: "/shortlet" },  // Ensure correct path
-    { name: "Agents", path: "/" },
+    { name: "Agents", path: "/agents" },
   ];
 
   return (
