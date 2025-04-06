@@ -72,7 +72,6 @@ export const fetchProperties = createAsyncThunk(
         return response.data;
       } catch (error) {
         toast.error("Failed to add property");
-        console.log(error.response.data)
         return rejectWithValue(error.response?.data?.message || 'Failed to add property');
       }
     }
