@@ -29,31 +29,13 @@ import PrivateRoute from "./routes/PrivateRoute";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AgentList from './pages/AgentList';
+import ProfilePage from './pages/ProfilePage';
 
 
 // Create a theme to disable hover styles
 const theme = createTheme({
   components: {
-    // MuiButton: {
-    //   styleOverrides: {
-    //     root: {
-    //       "&:hover": {
-    //         backgroundColor: "transparent", // No hover color
-    //       },
-    //     },
-    //   },
-    // },
-    // MuiIconButton: {
-    //   styleOverrides: {
-    //     root: {
-    //       color: "inherit",
-    //       "&:hover": {
-    //         backgroundColor: "transparent", // No hover color
-    //         color: "inherit"
-    //       },
-    //     },
-    //   },
-    // },
     MuiCard: {
       styleOverrides: {
         root: {
@@ -83,6 +65,7 @@ function App() {
             <Route path="/buy" element={<Buy />} />
             <Route path="/rent" element={<Rent />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/agents" element={<AgentList />} />
             <Route path="/signup" element={<Signup />} />
 
             {/* Agent Routes */}
@@ -90,6 +73,7 @@ function App() {
               <Route path="/agent/dashboard" element={<AgentDashboard />} />
               <Route path="/agent/mylistings" element={<MyListings />} />
               <Route path="/agent/property/add" element={<AddProperty />} />
+              <Route path="/agent/profile" element={<ProfilePage />} />
               <Route path="/agent/property/edit/:id" element={<EditProperty />} />
             </Route>
             
