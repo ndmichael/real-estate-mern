@@ -8,6 +8,7 @@ const BASE_URL = "http://localhost:5000/api";
 // Async Thunks for Register, Login, Logout
 export const registerUser = createAsyncThunk("auth/registerUser", async (userData, { rejectWithValue }) => {
   try {
+    console.log('Submitting:', JSON.stringify(userData, null, 2));
     const response = await axios.post(`${BASE_URL}/auth/register`, userData);
     localStorage.setItem("user", JSON.stringify(response.data));
 
@@ -33,8 +34,12 @@ export const loginUser = createAsyncThunk("auth/loginUser", async (credentials, 
   }
 });
 
-export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
+export const logoutUser = createAsyncThunk("auth/logoutUser", async (_, {getState}) => {
+  const userId = getState().auth.user?._id;
   localStorage.removeItem("user");
+  if (userId) {
+    localStorage.removeItem(`wishlist_${userId}`);
+  }
   toast.info("You have been logout, please login");
   return null;
 });
@@ -114,7 +119,12 @@ const authSlice = createSlice({
     loading: false, 
     loadingIds: [],  // Track loading per property ID
     error: null,
-    wishlist: JSON.parse(localStorage.getItem("wishlist")) || []  
+    wishlist: (() => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      // First try user's savedWishlist, then localStorage, then empty array
+      return user ? (user.savedListings || JSON.parse(localStorage.getItem(`wishlist_${user._id}`)) || []) : [];
+    })()
+    // wishlist: JSON.parse(localStorage.getItem(`wishlist_${JSON.parse(localStorage.getItem("user"))?._id}`)) || []  // Store wishlist by user ID
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -141,6 +151,14 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.loading = false;
+        // Fetch wishlist immediately after login
+        if (action.payload.user._id) {
+          console.log("payload triggered: ", action.payload.user._id)
+          // const savedWishlist = JSON.parse(localStorage.getItem(`wishlist_${action.payload.user.user_id}`)) || [];
+          const savedWishlist = (action.payload.user.savedListings || JSON.parse(localStorage.getItem(`wishlist_${action.payload.user._id}`)) || []);
+          console.log("savedListing: ", action.payload.user.savedListings)
+          state.wishlist = savedWishlist;
+        }
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -204,9 +222,8 @@ const authSlice = createSlice({
       .addCase(addToWishlist.fulfilled, (state, action) => {
         state.loadingIds = state.loadingIds.filter(id => id !== action.meta.arg);
         if (state.user) {
-          state.user.savedListings = action.payload.savedListings;
-          // localStorage.setItem("user", JSON.stringify(state.user));
-          localStorage.setItem("wishlist", JSON.stringify(action.payload.savedListings));
+          // Save the wishlist with the user-specific key
+          localStorage.setItem(`wishlist_${state.user._id}`, JSON.stringify(action.payload.savedListings));
         }
         state.wishlist = action.payload.savedListings; // Ensure UI updates
       })
@@ -223,8 +240,8 @@ const authSlice = createSlice({
       .addCase(removeFromWishlist.fulfilled, (state, action) => {
         state.loadingIds = state.loadingIds.filter(id => id !== action.meta.arg);
         if (state.user) {
-          state.user.savedListings = action.payload.savedListings;
-          localStorage.setItem("wishlist", JSON.stringify(action.payload.savedListings));
+          // Save the wishlist with the user-specific key
+          localStorage.setItem(`wishlist_${state.user._id}`, JSON.stringify(action.payload.savedListings));
         }
         state.wishlist = action.payload.savedListings; // Ensure UI updates
       })
