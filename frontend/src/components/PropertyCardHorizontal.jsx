@@ -85,7 +85,7 @@ const PropertyCardHorizontal = ({ property, showActions, onEdit, onDelete, onTog
           </Typography>
           <Button
             component={Link}
-            to={`/property/${property.id}`}
+            to={`/property/${property._id}`}
             variant="text"
             size="small"
             endIcon={<ArrowForwardIcon />}
