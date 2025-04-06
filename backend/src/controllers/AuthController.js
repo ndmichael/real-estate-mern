@@ -4,7 +4,19 @@ import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, phone, role, companyName, licenseNumber } = req.body;
+    const { 
+      firstName, 
+      lastName, 
+      email, 
+      password, 
+      phone, 
+      role,
+      profileImage,
+      agentDetails // This contains all agent-specific fields
+    } = req.body;
+
+    // Format phone number
+    const formattedPhone = phone.startsWith('0') ? '+234' + phone.slice(1) : phone;
 
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: "User already exists" });
@@ -19,24 +31,43 @@ export const registerUser = async (req, res) => {
         lastName,
         email,
         password: hashedPassword,
-        phone,
+        phone: formattedPhone,
         role,
-        isActive: true, // Clients are active immediately
+        profileImage,
+        isActive: true,
       });
     } else if (role === "agent") {
+      // Validate required agent fields
+      if (!agentDetails?.companyName || !agentDetails?.licenseNumber) {
+        return res.status(400).json({ 
+          message: "Company name and license number are required for agents",
+          receivedData: req.body // For debugging
+        });
+      }
+
       newUser = await User.create({
         firstName,
         lastName,
         email,
         password: hashedPassword,
-        phone,
+        phone: formattedPhone,
         role,
+        profileImage,
         agentDetails: {
-          companyName,
-          licenseNumber,
+          companyName: agentDetails.companyName,
+          licenseNumber: agentDetails.licenseNumber,
+          title: agentDetails.title || "Real Estate Agent",
+          bio: agentDetails.bio || "",
+          officeAddress: agentDetails.officeAddress || "",
+          officeHours: agentDetails.officeHours || "Mon-Fri 9am-5pm",
+          specialties: agentDetails.specialties || [],
+          serviceAreas: agentDetails.serviceAreas || [],
+          languages: agentDetails.languages || ['English'],
+          teamSize: agentDetails.teamSize || 1,
+          awards: agentDetails.awards || []
         },
-        isVerified: false, // Admin must verify agents
-        isActive: false, // Agents shouldn't be active until verification
+        isVerified: true,
+        isActive: true,
       });
     } else {
       return res.status(400).json({ message: "Invalid role specified" });
@@ -46,7 +77,11 @@ export const registerUser = async (req, res) => {
 
     res.status(201).json({ token, user: newUser });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Registration error:", error);
+    res.status(500).json({ 
+      message: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 };
 
