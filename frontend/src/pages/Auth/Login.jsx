@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom"; // ✅ Import useNavigate
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../redux/authSlice";
 import { TextField, Button, Box, Typography, CircularProgress, Alert } from "@mui/material";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // ✅ Initialize navigation
+  const navigate = useNavigate();
   const { loading, error, user } = useSelector((state) => state.auth);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -14,8 +14,15 @@ const Login = () => {
     const result = await dispatch(loginUser(data));
 
     if (result.meta.requestStatus === "fulfilled") {
-      navigate(`/${result.payload.user.role}/dashboard`); // Redirect based on role
-    }
+      // Navigate to the user's dashboard based on role
+      const role = result.payload.user.role;
+      if (role) {
+        navigate(`/${role}/dashboard`);
+      } else {
+        
+        navigate("/"); // Fallback route
+      }
+    } 
   };
 
   return (
