@@ -1,8 +1,16 @@
-// components/AgentList.jsx
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import AgentCard from './AgentCard';
-import { fetchVerifiedAgents, setPage } from '../redux/slices/agentSlice';
+import AgentCard from '../components/AgentCard';
+import { fetchVerifiedAgents, setPage } from '../redux/agentSlice';
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Alert,
+  Pagination,
+  Stack,
+  Container
+} from '@mui/material';
 
 const AgentList = () => {
   const dispatch = useDispatch();
@@ -12,34 +20,71 @@ const AgentList = () => {
     dispatch(fetchVerifiedAgents({ page: currentPage }));
   }, [dispatch, currentPage]);
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (_, page) => {
     dispatch(setPage(page));
   };
 
   return (
-    <div className="p-4 space-y-4">
-      <h1 className="text-2xl font-bold">Verified Agents</h1>
-      {loading && <p>Loading agents...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-      {!loading && agents.length === 0 && <p>No agents found.</p>}
+    <Container 
+      maxWidth={false} 
+      disableGutters 
+      sx={{ 
+        px: { xs: 2, sm: 3 },
+        py: 3
+      }}
+    >
+    <Box>
+      <Typography variant="h4" component="h1" gutterBottom fontWeight="bold">
+        Verified Agents
+      </Typography>
 
-      {agents.map((agent) => (
-        <AgentCard key={agent._id} agent={agent} />
-      ))}
+      {loading && (
+        <Box display="flex" justifyContent="center" my={4}>
+          <CircularProgress />
+        </Box>
+      )}
 
-      <div className="flex gap-2 justify-center mt-6">
-        {Array.from({ length: totalPages }, (_, idx) => (
-          <button
-            key={idx}
-            className={`px-3 py-1 rounded ${currentPage === idx + 1 ? 'bg-red-500 text-white' : 'bg-gray-200'}`}
-            onClick={() => handlePageChange(idx + 1)}
-          >
-            {idx + 1}
-          </button>
+      {error && (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {error}
+        </Alert>
+      )}
+
+      {!loading && agents.length === 0 && (
+        <Alert severity="info" sx={{ mb: 3 }}>
+          No agents found.
+        </Alert>
+      )}
+
+      <Stack spacing={3} sx={{ mb: 4 }}>
+        {agents.map((agent) => (
+          <AgentCard key={agent._id} agent={agent} />
         ))}
-      </div>
-    </div>
+      </Stack>
+
+      {totalPages > 1 && (
+        <Box display="flex" justifyContent="center" mt={4}>
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+            shape="rounded"
+            sx={{
+              '& .MuiPaginationItem-root.Mui-selected': {
+                backgroundColor: 'primary.main',
+                color: 'white'
+              }
+            }}
+          />
+        </Box>
+      )}
+    </Box>
+    </Container>
   );
 };
 
 export default AgentList;
+
+
+
