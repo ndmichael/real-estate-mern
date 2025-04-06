@@ -1,62 +1,89 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Box, Button, CircularProgress } from "@mui/material";
+import { 
+  Container, 
+  Typography, 
+  Box, 
+  Button, 
+  CircularProgress,
+  IconButton,
+  Tooltip
+} from "@mui/material";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import PropertyCardHorizontal from "./PropertyCardHorizontal";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromWishlist, addToWishlist } from "../redux/authSlice";
+import { 
+  removeFromWishlist, 
+  addToWishlist,
+  fetchWishlistProperties 
+} from "../redux/authSlice";
 import { fetchProperties } from "../redux/propertySlice";
-
-// // Images
-// import house1 from '../assets/images/img1.webp'
-// import house2 from '../assets/images/img2.webp'
-// import house3 from '../assets/images/img3.webp'
 
 const FeaturedListingCarousel = () => {
   const dispatch = useDispatch();
-  const { properties = [], loading } = useSelector((state) => state.property || {});
+  const navigate = useNavigate();
+  const { properties = [], loading: propertiesLoading } = useSelector((state) => state.property || {});
+  const { 
+    user, 
+    loadingIds, 
+    wishlist = [],
+    loading: authLoading 
+  } = useSelector((state) => state.auth);
+  
+  const isClient = user?.role === 'client';
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
-  const wishlist = useSelector((state) => state.auth.wishlist) || []; // Get wishlist directly from Redux
+  // Fetch properties and wishlist when component mounts or user changes
+  useEffect(() => {
+    dispatch(fetchProperties());
+    if (isClient) {
+      dispatch(fetchWishlistProperties());
+    }
+  }, [dispatch, isClient, user?._id]); // Add user._id to dependency to refetch when user changes
 
-  const handleWishlistToggle = (propertyId) => {
+  const handleWishlistClick = (propertyId) => {
+    // Redirect unauthenticated users to login
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    
+    // Don't show wishlist options for agents
+    if (user?.role === 'agent') return;
+    
     if (wishlist.includes(propertyId)) {
-      // If the property is already in the wishlist, remove it
-      console.log("remove wishlist triggered")
       dispatch(removeFromWishlist(propertyId));
     } else {
-      // If the property is not in the wishlist, add it
-      console.log("add wishlist triggered")
       dispatch(addToWishlist(propertyId));
     }
   };
 
-//   const [properties, setProperties] = useState([]);
-  const [swiperInstance, setSwiperInstance] = useState(null);
-
-  // Fetch properties when the component mounts
-  useEffect(() => {
-    dispatch(fetchProperties());
-  }, [dispatch]);
+  if (propertiesLoading || authLoading) {
+    return (
+      <Container sx={{ py: 5, display: 'flex', justifyContent: 'center' }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
 
   return (
-
     <Container sx={{ py: 5, margin: "auto" }}>
-
       {/* Header with Title and "See All" Button */}
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-      <Typography variant="h5" fontWeight="bold">
+        <Typography variant="h5" fontWeight="bold">
           Featured Listings
         </Typography>
         <Button
           component={Link}
           to="/listings"
-          color="success" // Green color
+          color="success"
           sx={{ 
             textTransform: "none", 
             fontWeight: "bold",
@@ -85,26 +112,66 @@ const FeaturedListingCarousel = () => {
         }}
         style={{ paddingBottom: "30px" }}
       >
-        {properties.map((property) => (
-          <SwiperSlide key={property._id}>
-            <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
-              <PropertyCardHorizontal 
-                property={property} 
-                isWishlisted={wishlist.includes(property._id)} // Passing wishlist state
-                onToggleWishlist={() => handleWishlistToggle(property._id)} // Passing the handler
-              />
-            </Box>
-          </SwiperSlide>
-        ))
-        }
+        {properties.map((property) => {
+          const isWishlisted = wishlist.includes(property._id);
+          const isWishlistLoading = loadingIds.includes(property._id);
+          
+          return (
+            <SwiperSlide key={property._id}>
+              <Box sx={{ 
+                width: "100%", 
+                display: "flex", 
+                justifyContent: "center",
+                position: 'relative'
+              }}>
+                {/* Wishlist Button (only shown to clients or unauthenticated users) */}
+                {user?.role !== 'agent' && (
+                  <Tooltip 
+                    title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+                    placement="top"
+                  >
+                    <IconButton
+                      onClick={() => handleWishlistClick(property._id)}
+                      disabled={isWishlistLoading}
+                      sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        zIndex: 2,
+                        backgroundColor: 'rgba(255,255,255,0.8)',
+                        '&:hover': {
+                          backgroundColor: 'rgba(255,255,255,0.9)'
+                        }
+                      }}
+                    >
+                      { isWishlisted ? (
+                        <FavoriteIcon color="success" />
+                      ) : (
+                        <FavoriteBorderIcon />
+                      )}
+                    </IconButton>
+                  </Tooltip>
+                )}
+                
+                <PropertyCardHorizontal property={property} />
+              </Box>
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
 
-      {/* Back & Next Buttons */}
+      {/* Navigation Buttons */}
       <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-        <Button onClick={() => swiperInstance?.slidePrev()} sx={{ color: "blue" }}>
+        <Button 
+          onClick={() => swiperInstance?.slidePrev()} 
+          sx={{ color: "primary.main" }}
+        >
           ← BACK
         </Button>
-        <Button onClick={() => swiperInstance?.slideNext()} sx={{ color: "blue" }}>
+        <Button 
+          onClick={() => swiperInstance?.slideNext()} 
+          sx={{ color: "primary.main" }}
+        >
           NEXT →
         </Button>
       </Box>
