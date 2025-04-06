@@ -24,3 +24,22 @@ export const updateUserProfile = async (req, res) => {
     res.status(500).json({ message: "Error updating profile", error });
   }
 };
+
+// GET /api/users/agents
+export const getVerifiedAgents = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const [agents, total] = await Promise.all([
+    User.find({ role: "agent", isVerified: true })
+      .sort({ createdAt: -1 }) 
+      .skip(skip)
+      .limit(limit)
+      .select("-password"),
+    User.countDocuments({ role: "agent", isVerified: true }),
+  ]);
+
+  res.json({ agents, total });
+};
+
