@@ -4,7 +4,6 @@ import { fetchMyProperties, deleteProperty } from "../../redux/propertySlice";
 import { 
   Container, 
   Typography, 
-  Grid, 
   Dialog, 
   DialogActions, 
   DialogContent, 
@@ -15,6 +14,7 @@ import {
   CircularProgress,
   Alert
 } from "@mui/material";
+import Grid from '@mui/material/Grid2';
 
 import PropertyCardHorizontal from "../../components/PropertyCardHorizontal";
 import { useNavigate, Link } from "react-router-dom";
@@ -58,14 +58,14 @@ const MyListings = () => {
       </Typography>
       {loading ? (
         <Box display="flex" justifyContent="center" alignItems="center" height="50vh">
-                <CircularProgress size={50} />
-                <Typography mr={2} pr={4}>Loading...</Typography>
+          <CircularProgress size={50} />
+          <Typography mr={2} pr={4}>Loading...</Typography>
         </Box>
         
       ) : (
         <Grid container spacing={2}>
           {myProperties.map((property) => (
-            <Grid item key={property._id} xs={12} sm={6} md={4}>
+            <Grid size={{xs:12, sm:6, md:6}} key={property._id}>
               <PropertyCardHorizontal
                 property={property}
                 showActions
