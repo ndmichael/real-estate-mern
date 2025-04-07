@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid2';
 import PropertyCardHorizontal  from "../components/PropertyCardHorizontal";
 import FilterBar from "../components/FilterBar"; // Add filtering later
 
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { 
   removeFromWishlist, 
