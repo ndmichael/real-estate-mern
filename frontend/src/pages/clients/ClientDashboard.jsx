@@ -4,8 +4,9 @@ import { Favorite, Message, Home } from "@mui/icons-material";
 import DashboardCard from "../../components/dashboard/DashboardCard";
 
 const ClientDashboard = () => {
+  
   return (
-    <Box>
+    <Box p={4}>
       <Typography variant="h5" fontWeight="bold" mb={3}>
         Welcome Back, Client!
       </Typography>
