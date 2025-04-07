@@ -12,11 +12,12 @@ import {
   DialogTitle, 
   Button ,
   Box,
-  CircularProgress
+  CircularProgress,
+  Alert
 } from "@mui/material";
 
 import PropertyCardHorizontal from "../../components/PropertyCardHorizontal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const MyListings = () => {
   const dispatch = useDispatch();
@@ -93,6 +94,26 @@ const MyListings = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {!loading && myProperties.length === 0 && (
+        <>
+          <Alert severity="info" sx={{ my: 3 }}>
+            No Properties Found.
+          </Alert>
+
+          <Button
+            component={Link}
+            to="/agent/property/add"
+            variant="outlined"
+            color="success"
+            size="large"
+
+          >
+            Start Adding Properties!
+          </Button>
+        </>
+      )}
+      
     </Container>
   );
 };
