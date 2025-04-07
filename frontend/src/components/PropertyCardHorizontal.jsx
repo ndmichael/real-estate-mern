@@ -24,7 +24,7 @@ const PropertyCardHorizontal = ({
       sx={{
         display: "flex",
         flexDirection: "column",
-        width: 320,
+        width: "100%",
         boxShadow: 3,
         textDecoration: "none",
         color: "inherit",
@@ -39,7 +39,12 @@ const PropertyCardHorizontal = ({
       <Box sx={{ position: "relative", overflow: "hidden" }}>
         <CardMedia
           className="property-image"
-          sx={{ height: 180, transition: "transform 0.3s ease-in-out" }}
+          sx={{ 
+            height: 220, 
+            objectFit: "cover", 
+            width: "100%", 
+            transition: "transform 0.3s ease-in-out" 
+          }}
           image={property.images[0]}
           alt={property.title}
         />
