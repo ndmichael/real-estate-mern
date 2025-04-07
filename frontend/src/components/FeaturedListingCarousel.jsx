@@ -124,36 +124,12 @@ const FeaturedListingCarousel = () => {
                 justifyContent: "center",
                 position: 'relative'
               }}>
-                {/* Wishlist Button (only shown to clients or unauthenticated users) */}
-                {user?.role !== 'agent' && (
-                  <Tooltip 
-                    title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-                    placement="top"
-                  >
-                    <IconButton
-                      onClick={() => handleWishlistClick(property._id)}
-                      disabled={isWishlistLoading}
-                      sx={{
-                        position: 'absolute',
-                        top: 8,
-                        right: 8,
-                        zIndex: 2,
-                        backgroundColor: 'rgba(255,255,255,0.8)',
-                        '&:hover': {
-                          backgroundColor: 'rgba(255,255,255,0.9)'
-                        }
-                      }}
-                    >
-                      { isWishlisted ? (
-                        <FavoriteIcon color="success" />
-                      ) : (
-                        <FavoriteBorderIcon />
-                      )}
-                    </IconButton>
-                  </Tooltip>
-                )}
-                
-                <PropertyCardHorizontal property={property} />
+                <PropertyCardHorizontal 
+                  property={property} 
+                  onToggleWishlist={handleWishlistClick} 
+                  isWishlistLoading={isWishlistLoading}
+                  isWishlisted={isWishlisted}
+                />
               </Box>
             </SwiperSlide>
           );
