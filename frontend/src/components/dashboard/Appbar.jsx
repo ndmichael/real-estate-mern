@@ -1,6 +1,7 @@
 import { AppBar, Toolbar, Typography, IconButton, Avatar, Box } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
 
 const CustomAppBar = ({ title }) => {
   const { user } = useSelector((state) => state.auth); // Get user from Redux
@@ -8,7 +9,12 @@ const CustomAppBar = ({ title }) => {
   return (
     <AppBar position="static" sx={{ backgroundColor: "#4CAF50" }}>
       <Toolbar>
-        <IconButton edge="start" color="inherit">
+        <IconButton 
+          edge="start" 
+          color="inherit"
+          component={Link}
+          to="/"
+        >
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
