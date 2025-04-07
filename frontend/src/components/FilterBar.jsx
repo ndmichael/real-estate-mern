@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Box, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
-import properties from "../data/properties";
 
-const FilterBar = ({ setFilteredProperties }) => {
+const FilterBar = ({ properties, setFilteredProperties }) => {
   const [category, setCategory] = useState("");
 
   const handleFilterChange = (event) => {
