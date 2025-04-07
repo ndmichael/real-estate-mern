@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Container, Typography, CircularProgress } from "@mui/material";
+import { Container, Typography, CircularProgress, Alert } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 // import properties from "../data/properties"; // Importing demo data
 import PropertyCardHorizontal  from "../components/PropertyCardHorizontal";
@@ -81,7 +81,7 @@ const Listings = () => {
       />
 
       {/* Grid of Listings */}
-      <Grid container spacing={2}>
+      <Grid container spacing={6}>
         {filteredProperties.map((property) => {
           const isWishlisted = wishlist.includes(property._id);
           const isWishlistLoading = loadingIds.includes(property._id);
@@ -96,8 +96,15 @@ const Listings = () => {
               />
             </Grid>
           );
-})}
+      })}
       </Grid>
+
+      {!propertiesLoading && filteredProperties.length === 0 && (
+        <Alert severity="info" sx={{ mb: 3 }}>
+            No Properties Found.
+        </Alert>
+      )}
+
     </Container>
   );
 };
