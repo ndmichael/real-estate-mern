@@ -22,7 +22,7 @@ const CustomAppBar = ({ title }) => {
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Typography>{`${user.user.firstName} ${user.user.lastName}`}</Typography>
-          <Avatar src={user.user.image || "/default-avatar.png"} />
+          <Avatar src={user.user.profileImage || "/default-avatar.png"} />
         </Box>
       </Toolbar>
     </AppBar>
