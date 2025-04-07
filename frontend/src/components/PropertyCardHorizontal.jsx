@@ -10,7 +10,12 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const PropertyCardHorizontal = ({ property, showActions, onEdit, onDelete, onToggleWishlist, isWishlisted }) => {
+const PropertyCardHorizontal = ({ 
+  property, showActions, 
+  onEdit, onDelete, 
+  onToggleWishlist, isWishlisted, 
+  isWishlistLoading 
+}) => {
   const { loadingIds } = useSelector((state) => state.auth);
   const isLoading = loadingIds.includes(property._id); // Only check this property
 
@@ -44,8 +49,9 @@ const PropertyCardHorizontal = ({ property, showActions, onEdit, onDelete, onTog
           <IconButton
             onClick={(e) => {
               e.stopPropagation();
-              onToggleWishlist(property.id);
+              onToggleWishlist(property._id);
             }}
+            isabled={isWishlistLoading}
             sx={{
               position: "absolute",
               top: 8,
