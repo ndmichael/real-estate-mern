@@ -9,6 +9,7 @@ import {
   Divider,
   Card,
   CardContent,
+  CircularProgress
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,7 +25,7 @@ const ProfilePage = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
 
   useEffect(() => {
@@ -149,8 +150,14 @@ const ProfilePage = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary">
-              Update Profile
+            <Button 
+              type="submit" 
+              variant="contained" 
+              color="primary"
+              disabled={isSubmitting}
+              startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : null}
+            >
+              {isSubmitting ? 'Updating...' : 'Update Profile'}
             </Button>
           </Grid>
         </Grid>
