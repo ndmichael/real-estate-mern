@@ -1,113 +1,3 @@
-// import React from 'react';
-// import { Container, Typography, Card, CardContent, Box } from '@mui/material';
-// import Grid from '@mui/material/Grid';
-// import { motion } from 'framer-motion';
-// import SearchIcon from '@mui/icons-material/Search';
-// import HomeWorkIcon from '@mui/icons-material/HomeWork';
-// import PaymentsIcon from '@mui/icons-material/Payments';
-
-// const steps = [
-//   {
-//     id: 1,
-//     icon: <SearchIcon sx={{ fontSize: 40, color: '#4CAF50' }} />, 
-//     title: 'Find Your Property',
-//     desc: 'Search and explore the best properties based on your preference.',
-//   },
-//   {
-//     id: 2,
-//     icon: <HomeWorkIcon sx={{ fontSize: 40, color: '#4CAF50' }} />, 
-//     title: 'Schedule a Visit',
-//     desc: 'Visit the property and verify all details with ease.',
-//   },
-//   {
-//     id: 3,
-//     icon: <PaymentsIcon sx={{ fontSize: 40, color: '#4CAF50' }} />, 
-//     title: 'Secure the Deal',
-//     desc: 'Complete the transaction and move into your dream home.',
-//   },
-// ];
-
-// const HowItWorks = () => {
-//   return (
-//     <Container sx={{ my: 8, textAlign: 'center' }}>
-//       <Typography variant="h4" fontWeight="bold" gutterBottom>
-//         How It Works
-//       </Typography>
-//       <Typography variant="body1" color="text.secondary" sx={{ mb: 6 }}>
-//         Follow these simple steps to get your perfect home.
-//       </Typography>
-
-//       <Grid container spacing={4} justifyContent="center">
-//         {steps.map((step) => (
-//           <Grid item xs={12} sm={6} md={4} key={step.id}>
-//             <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.3 }}>
-//               <Card
-//                 elevation={3}
-//                 sx={{
-//                   p: 3,
-//                   borderRadius: 3,
-//                   textAlign: 'center',
-//                   height: '100%',
-//                   display: 'flex',
-//                   flexDirection: 'column',
-//                   alignItems: 'center',
-//                   transition: 'transform 0.3s ease-in-out',
-//                   '&:hover': { transform: 'translateY(-10px)' },
-//                 }}
-//               >
-//                 <Box
-//                   sx={{
-//                     width: 80,
-//                     height: 80,
-//                     borderRadius: '50%',
-//                     backgroundColor: '#E8F5E9',
-//                     display: 'flex',
-//                     alignItems: 'center',
-//                     justifyContent: 'center',
-//                     position: 'relative',
-//                     mb: 3,
-//                   }}
-//                 >
-//                   <Box
-//                     sx={{
-//                       position: 'absolute',
-//                       top: -10,
-//                       right: -10,
-//                       width: 30,
-//                       height: 30,
-//                       borderRadius: '50%',
-//                       backgroundColor: '#4CAF50',
-//                       display: 'flex',
-//                       alignItems: 'center',
-//                       justifyContent: 'center',
-//                       color: '#fff',
-//                       fontSize: '14px',
-//                       fontWeight: 'bold',
-//                     }}
-//                   >
-//                     {step.id}
-//                   </Box>
-//                   {step.icon}
-//                 </Box>
-//                 <CardContent>
-//                   <Typography variant="h6" fontWeight="bold" gutterBottom>
-//                     {step.title}
-//                   </Typography>
-//                   <Typography variant="body2" color="text.secondary">
-//                     {step.desc}
-//                   </Typography>
-//                 </CardContent>
-//               </Card>
-//             </motion.div>
-//           </Grid>
-//         ))}
-//       </Grid>
-//     </Container>
-//   );
-// };
-
-// export default HowItWorks;
-
 import { Container, Typography, Box, Card, CardContent, Button } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { motion } from "framer-motion";
@@ -138,7 +28,17 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <Container sx={{ textAlign: "center", py: 10 }}>
+    <Box
+      sx={{
+        background: "linear-gradient(to bottom, #fffde7 50%, #e8f5e9 100%)",
+        padding: "0",
+        margin: "0"
+      }}
+    >
+    <Container sx={{ 
+      textAlign: "center", 
+      py: 10, 
+    }}>
       {/* Header Section */}
       <Typography variant="h4" fontWeight="bold" gutterBottom>
         How It Works
@@ -204,6 +104,7 @@ const HowItWorks = () => {
         ))}
       </Grid>
     </Container>
+    </Box>
   );
 };
 
