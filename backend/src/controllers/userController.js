@@ -11,17 +11,27 @@ export const getUserProfile = async (req, res) => {
 
 export const updateUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    const { firstName, lastName, email, phone } = req.body;
+    const profileImage = req.file ? req.file.path : undefined;
 
-    user.firstName = req.body.firstName || user.firstName;
-    user.lastName = req.body.lastName || user.lastName;
-    user.phone = req.body.phone || user.phone;
+    const userId = req.user.id; // or however you store auth
 
-    const updatedUser = await user.save();
-    res.json(updatedUser);
-  } catch (error) {
-    res.status(500).json({ message: "Error updating profile", error });
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        firstName,
+        lastName,
+        email,
+        phone,
+        ...(profileImage && { profileImage }), // only update if exists
+      },
+      { new: true }
+    );
+
+    res.json({ message: 'Profile updated', user: updatedUser });
+  } catch (err) {
+    console.error("Profile update error:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
