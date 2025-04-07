@@ -93,7 +93,7 @@ export const removeFromWishlist = createAsyncThunk("user/removeFromWishlist", as
     toast.success("Removed from wishlist!");
     return response.data;
   } catch (error) {
-    toast.error("Failed to remove from wishlist");
+    toast.error(error.message);
     console.log("error: ", error);
     return rejectWithValue(error.response?.data?.message || "Failed to remove from wishlist");
   }
@@ -105,6 +105,8 @@ export const fetchWishlistProperties = createAsyncThunk("auth/fetchWishlist", as
       const token = getState().auth.user.token;
       const config = { headers: { Authorization: `Bearer ${token}` } };
       const response = await axios.get(`${BASE_URL}/wishlist`, config);
+      localStorage.setItem("savedListings", JSON.stringify(response.data));
+      console.log("res data: ", response.data)
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Failed to fetch wishlist");
@@ -119,6 +121,7 @@ const authSlice = createSlice({
     loading: false, 
     loadingIds: [],  // Track loading per property ID
     error: null,
+    savedListings: JSON.parse(localStorage.getItem("savedListings")) || [],
     wishlist: (() => {
       const user = JSON.parse(localStorage.getItem("user"));
       // First try user's savedWishlist, then localStorage, then empty array
@@ -206,7 +209,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchWishlistProperties.fulfilled, (state, action) => {
-        state.wishlist = action.payload;
+        state.savedListings = action.payload;
         state.loading = false;
       })
       .addCase(fetchWishlistProperties.rejected, (state, action) => {
