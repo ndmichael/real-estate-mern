@@ -28,7 +28,7 @@ const PropertyCard = ({ property }) => {
       <CardMedia
         component="img"
         sx={{ width: { xs: "100%", sm: 250 }, height: 180 }}
-        image={property.image}
+        image={property.images[0]}
         alt={property.title}
       />
 
@@ -39,7 +39,7 @@ const PropertyCard = ({ property }) => {
             {property.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {property.location}
+            {property.location.city}, Nigeria
           </Typography>
           <Typography variant="h6" color="success" sx={{ mt: 1 }}>
             NGN{property.price}
