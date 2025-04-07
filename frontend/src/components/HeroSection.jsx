@@ -14,10 +14,10 @@ const HeroSection = () => {
       }}
     >
       {/* Title */}
-      <Typography variant="h3" fontWeight="bold" gutterBottom>
+      <Typography variant="h3" fontWeight="bold" color="black" gutterBottom>
         Find Your Dream Home
       </Typography>
-      <Typography variant="h6" sx={{ mb: 4 }}>
+      <Typography variant="h6" color="textSecondary" sx={{ mb: 4 }}>
         Buy, Rent, or Short Let properties easily with us.
       </Typography>
 
@@ -28,10 +28,14 @@ const HeroSection = () => {
         textColor="inherit"
         indicatorColor="primary"
         sx={{
-          background: "rgba(255, 255, 255, 0.2)",
+          background: "rgba(0, 69, 41, 0.2)",
           borderRadius: 2,
           mb: 3,
           width: { xs: "90%", md: "50%" },
+          "& .MuiTabs-indicator": {
+            backgroundColor: "#2e7d32", // Dark green
+            height: 4, // Thicker underline
+          }
         }}
       >
         <Tab label="Buy" sx={{ flex: 1 }} />
@@ -66,7 +70,15 @@ const HeroSection = () => {
         </FormControl>
 
         {/* Search Button */}
-        <Button variant="contained" color="primary" sx={{ px: 5, py: 2, fontSize: "1rem" }}>
+        <Button 
+          variant="contained" 
+          sx={{ 
+            px: 5, py: 2, fontSize: "1rem" ,
+            bgcolor: '#1e824a',  // Sample green from gradient
+            '&:hover': { bgcolor: '#136338' }
+          }}
+          
+        >
           Search
         </Button>
       </Box>
