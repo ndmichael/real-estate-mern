@@ -1,5 +1,10 @@
 import { useEffect } from "react";
-import { Container, Typography, CircularProgress } from "@mui/material";
+import { 
+  Container, 
+  Typography, 
+  CircularProgress, 
+  Alert
+} from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import PropertyCardHorizontal  from "../components/PropertyCardHorizontal";
 
