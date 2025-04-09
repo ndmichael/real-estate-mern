@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { fetchPropertyById } from "../redux/propertySlice";
 import { 
   Box, Typography, Grid, Button, Card, Divider, Stack, 
-  CircularProgress, Alert, Chip 
+  CircularProgress, Alert, Chip, Modal 
 } from "@mui/material";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, EffectFade } from 'swiper/modules';
@@ -17,14 +18,31 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 
+import InquiryForm from "../components/InquiryForm";
+
 const PropertyDetail = () => {
   const { id } = useParams();
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { property = {}, loading, error } = useSelector((state) => state.property || {});
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(fetchPropertyById(id));
   }, [dispatch, id]);
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");  // Redirect to login page if user is not authenticated
+    }
+  }, [user, navigate]);
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
 
   if (loading) return (
     <Box
@@ -176,8 +194,8 @@ const PropertyDetail = () => {
               variant="contained"
               size="large"
               color="success"
-              href={property.agent ? `mailto:${property.agent.email}` : '#'}
               disabled={!property.agent}
+              onClick={handleOpen}
             >
               {property.agent ? "Contact Agent" : "No Agent Assigned"}
             </Button>
@@ -195,6 +213,32 @@ const PropertyDetail = () => {
           {property.description}
         </Typography>
       </Box>
+
+      {/* Modal for Inquiry Form */}
+      <Modal open={openModal} onClose={handleClose}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            backgroundColor: "white",
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 3,
+          }}
+        >
+          <Typography variant="h6" mb={2}>
+            Send an Inquiry
+          </Typography>
+          <InquiryForm
+            propertyId={property?._id}
+            agentId={property?.agent?._id}
+            clientId={user?.user._id} // Assuming the user is logged in and stored in Redux
+          />
+        </Box>
+      </Modal>
     </Box>
   );
 };
