@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [searchType, setSearchType] = useState(0); // 0 = Buy, 1 = Rent, 2 = Short Let
-  const [keyword, setKeyword] = useState("");
   const [city, setCity] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -40,16 +39,7 @@ const SearchBar = () => {
         onChange={(e, newValue) => setSearchType(newValue)}
         textColor="inherit"
         indicatorColor="primary"
-        // sx={{
-        //   mb: 3,
-        //   background: "rgba(0, 69, 41, 0.2)",
-        //   borderRadius: 2,
-        //   width: { xs: "90%", md: "50%" },
-        //   "& .MuiTabs-indicator": {
-        //     backgroundColor: "#2e7d32",
-        //     height: 4,
-        //   }
-        // }}
+
         sx={{
             background: "rgba(0, 69, 41, 0.2)",
             borderRadius: 2,
