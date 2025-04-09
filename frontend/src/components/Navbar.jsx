@@ -45,7 +45,7 @@ const Navbar = () => {
           {/* Left Section: Logo & Links */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Typography variant="h6" sx={{ mr: 4, fontWeight: "bold" }}>
-              MyBrand
+              SaareNaija
             </Typography>
 
             {/* Desktop Links */}
