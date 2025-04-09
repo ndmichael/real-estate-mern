@@ -63,9 +63,9 @@ const MyListings = () => {
         </Box>
         
       ) : (
-        <Grid container spacing={2}>
+        <Grid container spacing={4}>
           {myProperties.map((property) => (
-            <Grid size={{xs:12, sm:6, md:6}} key={property._id}>
+            <Grid size={{xs:12, sm:6, md:4}} key={property._id}>
               <PropertyCardHorizontal
                 property={property}
                 showActions
