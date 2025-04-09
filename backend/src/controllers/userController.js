@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import { uploadImages } from "../utils/cloudinaryUpload.js"; 
 
 export const getUserProfile = async (req, res) => {
   try {
@@ -12,7 +13,10 @@ export const getUserProfile = async (req, res) => {
 export const updateUserProfile = async (req, res) => {
   try {
     const { firstName, lastName, email, phone } = req.body;
-    const profileImage = req.file ? req.file.path : undefined;
+    const image = req.file
+    const uploadedImage = image ? await uploadImages(image) : null;
+
+    // console.log("Req file: ", uploadedImage);
 
     const userId = req.user.id; // or however you store auth
 
@@ -23,7 +27,7 @@ export const updateUserProfile = async (req, res) => {
         lastName,
         email,
         phone,
-        ...(profileImage && { profileImage }), // only update if exists
+        profileImage: uploadedImage, // only update if exists
       },
       { new: true }
     );
