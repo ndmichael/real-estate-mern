@@ -63,7 +63,7 @@ export const getWishlist = async (req, res) => {
       return res.status(403).json({ message: "Only clients can view wishlist." });
     }
 
-    const client = await User.findById(req.user.id).populate("savedListings");
+    const client = await User.findById(req.user._id).populate("savedListings");
 
     res.status(200).json(client.savedListings);
   } catch (error) {
