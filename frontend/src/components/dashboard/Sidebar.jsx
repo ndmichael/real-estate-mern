@@ -64,6 +64,8 @@ const Sidebar = ({ role }) => {
     admin: [
       { text: "Admin Dashboard", icon: <AdminPanelSettings />, path: "/admin/dashboard" },
       { text: "Manage Users", icon: <Person />, path: "/admin/manage-users" },
+      { text: "Manage Agents", icon: <Person />, path: "/admin/manage-agents" },
+      { text: "View Inquiries", icon: <ListAlt />, path: "/admin/manage-inquiries" },
       { text: "Manage Listings", icon: <ListAlt />, path: "/admin/manage-listings" },
     ],
   };
