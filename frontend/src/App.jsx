@@ -16,6 +16,7 @@ import LayoutWrapper from './layouts/LayoutWrapper';
 import MyListings from './pages/agents/MyListings';
 import AddProperty from './pages/agents/AddProperty';
 import EditProperty from './pages/agents/EditProperty';
+import Shortlet from './pages/Shortlet';
 
 // Client import 
 import ClientDashboard from './pages/clients/ClientDashboard';
@@ -64,6 +65,7 @@ function App() {
             <Route path="/property/:id" element={<PropertyDetail />} />
             <Route path="/buy" element={<Buy />} />
             <Route path="/rent" element={<Rent />} />
+            <Route path="/shortlet" element={<Shortlet />} />
             <Route path="/login" element={<Login />} />
             <Route path="/agents" element={<AgentList />} />
             <Route path="/signup" element={<Signup />} />
