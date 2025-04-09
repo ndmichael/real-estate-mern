@@ -3,8 +3,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import adminService from "./adminService";
 // import { toast } from "react-toastify";
 
-const BASE_URL = "http://localhost:5000/api/admin";
-
 export const fetchDashboardStats = createAsyncThunk(
   "adminDashboard/getStats",
   async (_, { rejectWithValue, getState }) => {
