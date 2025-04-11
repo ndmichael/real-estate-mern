@@ -60,6 +60,17 @@ const verifyAgent = async (id, token) => {
   return res.data;
 };
 
+// Get all inquiries
+const getAllInquiries = async (token) => {
+  const res = await axios.get(`${BASE_URL}/inquiries`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  console.log("res inqu: ", res.data)
+  return res.data;
+};
+
 const adminService = {
   fetchDashboardStats,
   getAllUsers,
@@ -67,6 +78,8 @@ const adminService = {
   getAllListings,
   getUnverifiedAgents,
   verifyAgent,
+
+  getAllInquiries
 };
 
 export default adminService;
