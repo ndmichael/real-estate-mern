@@ -83,6 +83,7 @@ const UserSchema = new mongoose.Schema(
           'Land',
           'International',
           'Senior Housing',
+          'Shortlet'
         ],
         default: []
       },
