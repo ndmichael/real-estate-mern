@@ -19,6 +19,13 @@ const PropertyCardHorizontal = ({
   const { loadingIds } = useSelector((state) => state.auth);
   const isLoading = loadingIds.includes(property._id); // Only check this property
 
+  // Define category styles
+  const categoryStyles = {
+    buy: { backgroundColor: "green", color: "white" },
+    rent: { backgroundColor: "blue", color: "white" },
+    shortlet: { backgroundColor: "orange", color: "white" }
+  };
+
   return (
     <Card
       sx={{
@@ -56,7 +63,7 @@ const PropertyCardHorizontal = ({
               e.stopPropagation();
               onToggleWishlist(property._id);
             }}
-            isabled={isWishlistLoading}
+            disabled={isWishlistLoading}
             sx={{
               position: "absolute",
               top: 8,
@@ -72,17 +79,21 @@ const PropertyCardHorizontal = ({
             ) : (
               <FavoriteBorderIcon />
             )}
-            {/* {isWishlisted ? <FavoriteIcon color="success" /> : <FavoriteBorderIcon />} */}
           </IconButton>
         </Tooltip>
       </Box>
 
       {/* Property Content */}
       <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+        {/* Category Badge */}
+        <Box sx={{ position: "absolute", top: 10, left: 10, backgroundColor: categoryStyles[property.category]?.backgroundColor, color: categoryStyles[property.category]?.color, padding: "5px 10px", borderRadius: "5px", fontWeight: "bold" }}>
+          {property.category.charAt(0).toUpperCase() + property.category.slice(1)}
+        </Box>
+
         {/* Title & Location */}
         <Box>
           <Typography variant="h6" fontWeight="bold" sx={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            {property.title}
+            {property.title} 
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {property.location.city}
