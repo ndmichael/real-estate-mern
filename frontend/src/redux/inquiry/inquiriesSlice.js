@@ -17,7 +17,7 @@ export const fetchAllInquiries = createAsyncThunk(
 
 export const createInquiry = createAsyncThunk(
   "inquiries/createInquiry",
-  async (inquiryData, { rejectWithValue, getState }) => {
+  async ({inquiryData}, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.user.token;
       return await inquiryService.createInquiry(inquiryData, token)
@@ -25,6 +25,30 @@ export const createInquiry = createAsyncThunk(
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch your stats');
   }
 });
+
+export const fetchAgentInquiries = createAsyncThunk(
+  'inquiries/fetchAgentInquiries',
+  async (agentId, { getState, rejectWithValue }) => {
+    try {
+      const token = getState().auth.user.token;
+      return await inquiryService.fetchAgentInquiries(token, agentId);
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch agent inquiries');
+    }
+  }
+);
+
+export const replyToInquiry = createAsyncThunk(
+  'inquiries/replyToInquiry',
+  async ({ id, reply }, { getState, rejectWithValue }) => {
+    try {
+      const token = getState().auth.user.token;
+      return await inquiryService.replyToInquiry({ id, reply }, token);
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to send reply');
+    }
+  }
+);
 
 const inquiriesSlice = createSlice({
   name: "inquiries",
@@ -59,7 +83,36 @@ const inquiriesSlice = createSlice({
       .addCase(createInquiry.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
-      });
+      })
+
+      .addCase(fetchAgentInquiries.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAgentInquiries.fulfilled, (state, action) => {
+        state.loading = false;
+        state.inquiries = action.payload;
+      })
+      .addCase(fetchAgentInquiries.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Reply to Inquiry
+    .addCase(replyToInquiry.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(replyToInquiry.fulfilled, (state, action) => {
+      state.loading = false;
+      const index = state.inquiries.findIndex(i => i._id === action.payload._id);
+      if (index !== -1) {
+        state.inquiries[index] = action.payload; // updated inquiry with reply
+      }
+      state.error = null;
+    })
+    .addCase(replyToInquiry.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
   },
 });
 
