@@ -10,10 +10,7 @@ const InquirySchema = new mongoose.Schema(
         type: String,
         default: "",
       },
-      repliedAt: {
-        type: Date,
-        default: null,
-      },
+      
       status: { type: String, enum: ["pending", "replied"], default: "pending" },
     },
     { timestamps: true }
