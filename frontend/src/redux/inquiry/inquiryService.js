@@ -14,20 +14,27 @@ const createInquiry = async (inquiryData, token) => {
     return res.data;
 };
 
-  // Get dashboard stats
-const fetchAllInquiries = async (token) => {
-    const res = await axios.get(`${BASE_URL}/create`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+export const fetchAgentInquiries = async (token, id) => {
+    const res = await axios.get(`${BASE_URL}/agent/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(`res dashboard: ${res.data}`)
+    console.log("Inquiries: ", res.data)
     return res.data;
-};
+  };
+  
+  export const replyToInquiry = async ({ id, reply }, token) => {
+    const res = await axios.put(
+      `${BASE_URL}/reply/${id}`,
+      { reply },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return res.data;
+  };
 
 const inquiryService = {
-    fetchAllInquiries,
-    createInquiry
+    createInquiry,
+    fetchAgentInquiries,
+    replyToInquiry,
   };
   
   export default inquiryService;
