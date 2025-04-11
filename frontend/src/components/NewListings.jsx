@@ -3,8 +3,9 @@ import {
   Typography, 
   Container, 
   Box, 
-  Button ,
-  CircularProgress
+  Button,
+  CircularProgress,
+  Alert // Import the Alert component
 } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
@@ -12,7 +13,7 @@ import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import PropertyCard from "./PropertyCard";
 
 import { fetchProperties } from "../redux/propertySlice";
-import {useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 
@@ -22,8 +23,7 @@ const NewListings = () => {
 
   useEffect(() => {
     dispatch(fetchProperties());
-  }, [dispatch]); 
-
+  }, [dispatch]);
 
   if (loading) {
     return (
@@ -33,18 +33,17 @@ const NewListings = () => {
     );
   }
 
-  
   return (
-    <Container sx={{ my: 5,  width: "100%" }}>
+    <Container sx={{ my: 5, width: "100%" }}>
       {/* Header with Title and "See All" Button */}
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-      <Typography variant="h5" fontWeight="bold">
+        <Typography variant="h5" fontWeight="bold">
           New Listings
         </Typography>
         <Button
           component={Link}
           to="/listings"
-          color="success" // Green color
+          color="success"
           sx={{ 
             textTransform: "none", 
             fontWeight: "bold",
@@ -57,9 +56,16 @@ const NewListings = () => {
         </Button>
       </Box>
 
+      {/* Show Alert if No Properties */}
+      {properties.length === 0 && (
+        <Alert severity="info" sx={{ mb: 2 }}>
+          No new listings available at the moment. Please check back later!
+        </Alert>
+      )}
+
       <Grid container spacing={4}>
         {properties?.slice(0, 4).map((property) => (
-          <Grid size={{xs:12, sm:6, md:6}}  key={property.id}>
+          <Grid size={{ xs: 12, sm: 6, md: 6 }} key={property.id}>
             <PropertyCard property={property} />
           </Grid>
         ))}
@@ -68,4 +74,4 @@ const NewListings = () => {
   );
 };
 
-export default  NewListings;
+export default NewListings;
