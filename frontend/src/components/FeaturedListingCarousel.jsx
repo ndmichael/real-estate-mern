@@ -6,7 +6,8 @@ import {
   Button, 
   CircularProgress,
   IconButton,
-  Tooltip
+  Tooltip,
+  Alert // Import Alert component
 } from "@mui/material";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -95,6 +96,13 @@ const FeaturedListingCarousel = () => {
           See All <ArrowRightAltIcon />
         </Button>
       </Box>
+
+      {/* Show Alert if No Properties */}
+      {properties.length === 0 && (
+        <Alert severity="info" sx={{ mb: 2 }}>
+          No properties available at the moment. Please check back later!
+        </Alert>
+      )}
 
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
