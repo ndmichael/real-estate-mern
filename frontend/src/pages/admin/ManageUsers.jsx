@@ -107,21 +107,21 @@ const ManageUsers = () => {
             rows={users || []}
             columns={columns}
             getRowId={(row) => row._id}
-            autoHeight
+
             sx={{
-                "& .MuiDataGrid-columnHeaders": {
-                  backgroundColor: "#1e824a",  // Background color for column headers
-                  color: "#000",               // Set the text color to black for better visibility
-                  fontWeight: "bold",
-                },
-                "& .MuiDataGrid-cell": {
-                  color: "#333",               // Text color for cells
-                },
-                "& .MuiDataGrid-row:hover": {
-                  backgroundColor: "#f9f9f9",  // Hover color for rows
-                },
-                borderRadius: 2,
-              }}
+              "& .MuiDataGrid-columnHeaders": {
+                backgroundColor: "#1e824a",  // Background color for column headers
+                color: "#000",               // Set the text color to black for better visibility
+                fontWeight: "bold",
+              },
+              "& .MuiDataGrid-cell": {
+                color: "#333",               // Text color for cells
+              },
+              "& .MuiDataGrid-row:hover": {
+                backgroundColor: "#f9f9f9",  // Hover color for rows
+              },
+              borderRadius: 2,
+            }}
           />
         )}
       </Paper>

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Container, Typography, CircularProgress, Alert } from "@mui/material";
+import { Container, Typography, CircularProgress, Alert, Box } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 // import properties from "../data/properties"; // Importing demo data
 import PropertyCardHorizontal  from "../components/PropertyCardHorizontal";
 import FilterBar from "../components/FilterBar"; // Add filtering later
+import SearchBar from "../components/SearchBar";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +25,7 @@ const Listings = () => {
     wishlist = [],
     loading: authLoading 
   } = useSelector((state) => state.auth);
+
   
   const isClient = user?.role === 'client';
   const [filteredProperties, setFilteredProperties] = useState(properties);
@@ -80,6 +82,16 @@ const Listings = () => {
         setFilteredProperties={setFilteredProperties} 
       />
 
+      <Box
+        sx={{
+          background: "#dee2e6",
+          marginBottom: "4rem"
+        }}
+      >
+        {/* Search Features */}
+        <SearchBar showTabs={true} />
+      </Box>
+
       {/* Grid of Listings */}
       <Grid container spacing={6}>
         {filteredProperties.map((property) => {
@@ -87,7 +99,13 @@ const Listings = () => {
           const isWishlistLoading = loadingIds.includes(property._id);
 
           return(
-            <Grid size={{xs:12, sm:6, md:4}} key={property.id}>
+            <Grid 
+              size={{xs:12, sm:6, md:4}} 
+              key={property.id}
+              sx={{ 
+                position: 'relative'
+              }}
+            >
               <PropertyCardHorizontal 
                 property={property} 
                 onToggleWishlist={handleWishlistClick} 

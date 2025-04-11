@@ -80,7 +80,13 @@ const Shortlet = () => {
           const isWishlistLoading = loadingIds.includes(property._id);
 
           return(
-            <Grid size={{xs:12, sm:6, md:4}} key={property.id}>
+            <Grid 
+              size={{xs:12, sm:6, md:4}} 
+              key={property.id}
+              sx={{ 
+                position: 'relative'
+              }}
+            >
               <PropertyCardHorizontal 
                 property={property} 
                 onToggleWishlist={handleWishlistClick} 
