@@ -38,7 +38,11 @@ export const verifyAgent = async (req, res) => {
 };
 
 export const getAllInquiries = async (req, res) => {
-  const inquiries = await Inquiry.find().populate("property").populate("user");
+  const inquiries = await Inquiry.find()
+      .populate("property")
+      .populate("client")
+      .populate("agent");
+  console.log("inquiries: ", inquiries)
   res.json(inquiries);
 };
 

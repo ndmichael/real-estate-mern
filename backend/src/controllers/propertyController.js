@@ -200,3 +200,37 @@ export const getPropertyById = async (req, res) => {
   }
 };
 
+
+// propertyController.js
+export const searchProperties = async (req, res) => {
+  try {
+    console.log(req.params)
+    const { category, city, minPrice, maxPrice, bedrooms } = req.query;
+    
+    // Build query
+    const query = { isAvailable: true };
+    
+    // Only add filters if they exist
+    if (category) query.category = category;
+    if (city) query['location.city'] = new RegExp(city, 'i');
+    
+    // Handle price range
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = Number(minPrice);
+      if (maxPrice) query.price.$lte = Number(maxPrice);
+    }
+    
+    // Handle bedrooms
+    if (bedrooms) query.bedrooms = { $gte: Number(bedrooms) };
+
+    const properties = await Property.find(query);
+    res.json(properties);
+    
+  } catch (error) {
+    res.status(500).json({ 
+      message: "Search failed",
+      error: error.message 
+    });
+  }
+};
