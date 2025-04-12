@@ -3,38 +3,42 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typo
 import Grid2 from "@mui/material/Grid2";
 import { useNavigate } from "react-router-dom";
 
-const SearchBar = () => {
+const SearchBar = ({ showTabs = true }) => {
   const [searchType, setSearchType] = useState(0); // 0 = Buy, 1 = Rent, 2 = Short Let
-  const [city, setCity] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [bedrooms, setBedrooms] = useState("");
+  const [city, setCity] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+  const [bedrooms, setBedrooms] = useState('');
+
   const navigate = useNavigate();
 
   const categoryOptions = ["Buy", "Rent", "Short Let"];
 
-  const handleSearch = async () => {
-    try {
-      const query = new URLSearchParams({
-        category: categoryOptions[searchType].toLowerCase(),
-        keyword,
-        city,
-        minPrice,
-        maxPrice,
-        bedrooms,
-      }).toString();
-
-      // Navigate to the listing page with query params
-      navigate(`/properties?${query}`);
-    } catch (error) {
-      console.error("Search failed:", error);
-    }
+  const handleSearch = () => {
+    const rawParams = {
+      category: categoryOptions[searchType].toLowerCase(),
+      city,
+      minPrice,
+      maxPrice,
+      bedrooms,
+    };
+  
+    // Clean up empty fields
+    const cleanParams = {};
+    Object.entries(rawParams).forEach(([key, value]) => {
+      if (value) cleanParams[key] = value;
+    });
+  
+    const searchParams = new URLSearchParams(cleanParams).toString();
+    navigate(`/properties/search/results?${searchParams}`);
   };
+  
 
   return (
     <Box sx={{ bgcolor: "rgba(255,255,255,0.2)", p: 4, borderRadius: 2 }}>
       {/* Tabs */}
-      <Tabs
+      {showTabs && 
+      (<Tabs
         value={searchType}
         onChange={(e, newValue) => setSearchType(newValue)}
         textColor="inherit"
@@ -55,6 +59,7 @@ const SearchBar = () => {
           <Tab key={i} label={label} sx={{ flex: 1 }} />
         ))}
       </Tabs>
+      )}
 
       {/* Search Fields */}
       <Grid2 container spacing={2}>
