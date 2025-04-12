@@ -107,7 +107,6 @@ const FeaturedListingCarousel = () => {
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={15}
-        slidesPerView={4}
         loop={true}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
         pagination={{ clickable: true }}
