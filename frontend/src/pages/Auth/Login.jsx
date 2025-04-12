@@ -26,41 +26,51 @@ const Login = () => {
   };
 
   return (
-    <Box sx={{ width: 350, mx: "auto", mt: 5, p: 3, boxShadow: 3, borderRadius: 2 }}>
-      <Typography variant="h5" fontWeight="bold" mb={2} textAlign="center">Login</Typography>
-      
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-      
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          label="Email"
-          fullWidth
-          {...register("email", { required: "Email is required" })}
-          error={!!errors.email}
-          helperText={errors.email?.message}
-          sx={{ mb: 2 }}
-        />
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '80vh',
+        p: 2
+      }}
+    >
+      <Box sx={{ width: 350, mx: "auto", my: 5, p: 3, boxShadow: 3, borderRadius: 2 }}>
+        <Typography variant="h5" fontWeight="bold" mb={2} textAlign="center">Login</Typography>
         
-        <TextField
-          label="Password"
-          type="password"
-          fullWidth
-          {...register("password", { required: "Password is required" })}
-          error={!!errors.password}
-          helperText={errors.password?.message}
-          sx={{ mb: 2 }}
-        />
+        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+        
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <TextField
+            label="Email"
+            fullWidth
+            {...register("email", { required: "Email is required" })}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+            sx={{ mb: 2 }}
+          />
+          
+          <TextField
+            label="Password"
+            type="password"
+            fullWidth
+            {...register("password", { required: "Password is required" })}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            sx={{ mb: 2 }}
+          />
 
-        <Button
-          type="submit"
-          variant="contained"
-          fullWidth
-          sx={{ bgcolor: "green", "&:hover": { bgcolor: "darkgreen" } }}
-          disabled={loading}
-        >
-          {loading ? <CircularProgress size={24} color="inherit" /> : "Login"}
-        </Button>
-      </form>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{ bgcolor: "green", "&:hover": { bgcolor: "darkgreen" } }}
+            disabled={loading}
+          >
+            {loading ? <CircularProgress size={24} color="inherit" /> : "Login"}
+          </Button>
+        </form>
+      </Box>
     </Box>
   );
 };
