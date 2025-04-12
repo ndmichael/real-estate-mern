@@ -74,7 +74,7 @@ const SearchResults = () => {
 
     if(error){
         return(
-            <Alert severity="error" sx={{ mb: 3 }}>
+            <Alert severity="error" sx={{ my: 3 }}>
                 Failed return search results... 
             </Alert>
         )
