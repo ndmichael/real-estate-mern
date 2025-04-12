@@ -201,36 +201,43 @@ export const getPropertyById = async (req, res) => {
 };
 
 
-// propertyController.js
 export const searchProperties = async (req, res) => {
   try {
-    console.log(req.params)
     const { category, city, minPrice, maxPrice, bedrooms } = req.query;
-    
-    // Build query
+
+    // Build base query
     const query = { isAvailable: true };
-    
-    // Only add filters if they exist
-    if (category) query.category = category;
-    if (city) query['location.city'] = new RegExp(city, 'i');
-    
-    // Handle price range
+
+   
+    if (category) query.category = new RegExp(`^${category}$`, 'i');
+
+
+    if (city) {
+      query['location.city'] = { $regex: new RegExp(city, 'i') };
+    }
+
     if (minPrice || maxPrice) {
       query.price = {};
       if (minPrice) query.price.$gte = Number(minPrice);
       if (maxPrice) query.price.$lte = Number(maxPrice);
     }
-    
-    // Handle bedrooms
-    if (bedrooms) query.bedrooms = { $gte: Number(bedrooms) };
 
-    const properties = await Property.find(query);
-    res.json(properties);
-    
+    if (bedrooms) {
+      query.bedrooms = { $gte: Number(bedrooms) };
+    }
+
+    // Query DB
+    const properties = await Property.find(query)
+      .populate("agent", "fullName company isVerified") // optionally populate agent info
+      .sort({ createdAt: -1 }); // latest first
+
+    res.status(200).json(properties);
   } catch (error) {
+    console.error("Search Error:", error);
     res.status(500).json({ 
-      message: "Search failed",
+      message: "Search failed", 
       error: error.message 
     });
   }
 };
+
