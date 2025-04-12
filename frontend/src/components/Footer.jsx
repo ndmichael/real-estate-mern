@@ -1,13 +1,18 @@
-import { Container, Grid, Typography, TextField, Button, IconButton, Box } from "@mui/material";
+import { Container, Typography, TextField, Button, IconButton, Box } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { LinkedIn, Twitter, GitHub } from "@mui/icons-material";
 
 const Footer = () => {
   return (
-    <Box sx={{ bgcolor: "success.lighter", py: 6, color: "text.primary" }}>
+    <Box sx={{ 
+      bgcolor: "success.lighter", 
+      py: 6, 
+     }}
+    >
       <Container>
         <Grid container spacing={4}>
           {/* Brand + Newsletter */}
-          <Grid item xs={12} md={4}>
+          <Grid size={{xs:12, md:4}}>
             <Typography variant="h5" fontWeight="bold" color="success.dark">
               RENTATOWN
             </Typography>
@@ -29,7 +34,7 @@ const Footer = () => {
           </Grid>
 
           {/* Links */}
-          <Grid item xs={12} md={2}>
+          <Grid size={{xs:12, md:2}}>
             <Typography variant="subtitle1" fontWeight="bold">
               Product
             </Typography>
@@ -40,7 +45,7 @@ const Footer = () => {
             ))}
           </Grid>
 
-          <Grid item xs={12} md={2}>
+          <Grid size={{xs:12, md:2}}>
             <Typography variant="subtitle1" fontWeight="bold">
               Company
             </Typography>
@@ -51,7 +56,7 @@ const Footer = () => {
             ))}
           </Grid>
 
-          <Grid item xs={12} md={2}>
+          <Grid size={{xs:12, md:2}}>
             <Typography variant="subtitle1" fontWeight="bold">
               Legal
             </Typography>
@@ -63,7 +68,7 @@ const Footer = () => {
           </Grid>
 
           {/* Social Icons */}
-          <Grid item xs={12} md={2} sx={{ textAlign: { xs: "center", md: "right" } }}>
+          <Grid size={{xs:12, md:2}} sx={{ textAlign: { xs: "center", md: "right" } }}>
             <IconButton>
               <GitHub sx={{ color: "text.secondary" }} />
             </IconButton>
