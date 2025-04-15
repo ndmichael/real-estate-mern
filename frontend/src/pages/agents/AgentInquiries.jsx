@@ -11,7 +11,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAgentInquiries } from "../../redux/inquiry/inquiriesSlice";
 import ReplyIcon from "@mui/icons-material/Reply";
-import InquiryForm from "../../components/InquiryForm";
+import ReplyModalForm from "../../components/ReplyModalForm";
+import { toast } from "react-toastify";
 
 const AgentInquiries = () => {
   const dispatch = useDispatch();
@@ -21,15 +22,13 @@ const AgentInquiries = () => {
   const [selectedInquiry, setSelectedInquiry] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  console.log("frontend: ", inquiries)
-
   useEffect(() => {
-    dispatch(fetchAgentInquiries(user.user._id));
+    dispatch(fetchAgentInquiries(user.user._id))
+    .unwrap()
+    .then(() => toast.success("Inquiries fetched successfully"))
+      .catch((err) => toast.error(err));
   }, [dispatch, user]);
 
-  // const handleReplySubmit = (id, reply) => {
-  //   dispatch(replyToInquiry({ id, reply }));
-  // };
 
   const columns = [
     { field: "_id", headerName: "ID", flex: 1 },
@@ -100,12 +99,13 @@ const AgentInquiries = () => {
       </Paper>
 
       {selectedInquiry && (
-        <InquiryForm
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          inquiry={selectedInquiry}
-          onSubmit={handleReplySubmit}
-        />
+        <Box>
+          <ReplyModalForm
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+            inquiry={selectedInquiry}
+          />
+        </Box>
       )}
     </Box>
   );
