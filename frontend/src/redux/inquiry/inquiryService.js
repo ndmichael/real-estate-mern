@@ -10,7 +10,6 @@ const createInquiry = async (inquiryData, token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(`res dashboard: ${res.data}`)
     return res.data;
 };
 
@@ -18,14 +17,13 @@ export const fetchAgentInquiries = async (token, id) => {
     const res = await axios.get(`${BASE_URL}/agent/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log("Inquiries: ", res.data)
     return res.data;
   };
   
-  export const replyToInquiry = async ({ id, reply }, token) => {
+  export const replyToInquiry = async ({inquiryId, replyMessage }, token) => {
     const res = await axios.put(
-      `${BASE_URL}/reply/${id}`,
-      { reply },
+      `${BASE_URL}/reply/${inquiryId}`,
+      { replyMessage },
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return res.data;
