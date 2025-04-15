@@ -30,7 +30,8 @@ export const getClientInquiries = async (req, res) => {
       // Fetch inquiries and populate client, agent, and property details
       const inquiries = await Inquiry.find({ client: clientId })
         .populate("property") 
-        .populate("user");
+        .populate("agent") // populate the agent details
+        .populate("client"); // populate the client details
   
       if (inquiries.length === 0) {
         return res.status(404).json({ message: "No inquiries found" });
@@ -38,6 +39,7 @@ export const getClientInquiries = async (req, res) => {
   
       res.json(inquiries);
     } catch (error) {
+      console.log(error)
       res.status(500).json({ message: "Failed to get inquiries", error });
     }
   };
