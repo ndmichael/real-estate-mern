@@ -30,6 +30,7 @@ const InquiryForm = ({ propertyId, agentId, clientId }) => {
     setIsLoading(true); 
 
     try {
+      console.log("frontend inquiry: ", inquiryData)
       const res = await dispatch(createInquiry(inquiryData));
       if (res.meta.requestStatus === "fulfilled") {
         toast.success("Inquiry submitted successfully");
