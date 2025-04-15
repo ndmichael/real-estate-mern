@@ -26,10 +26,9 @@ import AgentList from './pages/AgentList';
 
 // Client import 
 import ClientDashboard from './pages/clients/ClientDashboard';
-import Inquires from './pages/clients/Inquires';
 import ProfileSettings from './pages/clients/ProfileSettings';
 import SavedProperties from './pages/clients/SaveProperties';
-import Inquiries from './pages/clients/Inquires';
+import ClientInquiries from './pages/clients/ClientInquires';
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -110,8 +109,8 @@ function App() {
             <Route element={<PrivateRoute allowedRoles={["client"]} />}>
               <Route path="/client/dashboard" element={<ClientDashboard />} />
               <Route path="/client/saved-properties" element={<SavedProperties />} />
-              <Route path="/client/property/inquiries" element={<Inquires />} />
-              <Route path="/client/property/profile" element={<ProfileSettings />} />
+              <Route path="/client/inquiries" element={<ClientInquiries />} />
+              <Route path="/client/profile" element={<ProfileSettings />} />
             </Route>
             
           </Routes>
