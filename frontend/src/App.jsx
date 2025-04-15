@@ -110,7 +110,7 @@ function App() {
               <Route path="/client/dashboard" element={<ClientDashboard />} />
               <Route path="/client/saved-properties" element={<SavedProperties />} />
               <Route path="/client/inquiries" element={<ClientInquiries />} />
-              <Route path="/client/profile" element={<ProfileSettings />} />
+              <Route path="/client/profile" element={<ProfilePage />} />
             </Route>
             
           </Routes>
