@@ -29,10 +29,19 @@ export const fetchAgentInquiries = async (token, id) => {
     return res.data;
   };
 
+  export const fetchClientInquiries = async (token, clientId) => {
+    const res = await axios.get(`${BASE_URL}/client/${clientId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.data;
+  };
+  
+
 const inquiryService = {
     createInquiry,
     fetchAgentInquiries,
     replyToInquiry,
+    fetchClientInquiries
   };
   
   export default inquiryService;
