@@ -27,16 +27,6 @@ export const getAllAgents = async (req, res) => {
   res.json(agents);
 };
 
-export const verifyAgent = async (req, res) => {
-  const agent = await User.findById(req.params.id);
-  if (!agent || agent.role !== "agent") return res.status(404).json({ message: "Agent not found" });
-
-  agent.verified = !agent.verified;
-  await agent.save();
-
-  res.json({ message: `Agent ${agent.verified ? "verified" : "unverified"}` });
-};
-
 export const getAllInquiries = async (req, res) => {
   const inquiries = await Inquiry.find()
       .populate("property")
