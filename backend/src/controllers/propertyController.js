@@ -188,7 +188,7 @@ export const deleteProperty = async (req, res) => {
 // Public Route: Get a single property by ID
 export const getPropertyById = async (req, res) => {
   try {
-    const property = await Property.findById(req.params.id).populate("agent", "firstName lastName email");
+    const property = await Property.findById(req.params.id).populate("agent", "firstName lastName email agentDetails");
 
     if (!property) {
       return res.status(404).json({ message: "Property not found" });
