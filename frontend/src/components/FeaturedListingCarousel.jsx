@@ -119,7 +119,7 @@ const FeaturedListingCarousel = () => {
         }}
         style={{ paddingBottom: "30px" }}
       >
-        {properties.map((property) => {
+        {properties?.slice(0,8).map((property) => {
           const isWishlisted = wishlist.includes(property._id);
           const isWishlistLoading = loadingIds.includes(property._id);
           
