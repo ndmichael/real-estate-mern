@@ -45,17 +45,19 @@ export const getClientInquiries = async (req, res) => {
   export const getAgentInquiries = async (req, res) => {
     try {
       const agentId = req.params.agentId;
+      console.log("agent id: ", agentId)
   
       // Fetch inquiries and populate client, agent, and property details
       const inquiries = await Inquiry.find({ agent: agentId })
         .populate("property") // populate the property details
         .populate("agent") // populate the agent details
         .populate("client"); // populate the client details
+
+        console.log("agent inquiries: ", inquiries)
   
       if (inquiries.length === 0) {
-        return res.status(404).json({ message: "No inquiries found" });
+        return res.status(404).json({ message: "No inquiries found for this agent" });
       }
-      console.log("inquiries: ", inquiries)
       res.json(inquiries);
     } catch (error) {
       res.status(500).json({ message: "Failed to get inquiries", error });
@@ -64,19 +66,30 @@ export const getClientInquiries = async (req, res) => {
   
 
 // Update inquiry status (e.g., from 'pending' to 'replied')
-export const updateInquiryStatus = async (req, res) => {
+// controllers/inquiryController.js
+// also save the agent reply to the client.
+
+export const replyToInquiry = async (req, res) => {
   try {
     const inquiryId = req.params.id;
-    const { status } = req.body;
+    const { replyMessage } = req.body;
 
     const inquiry = await Inquiry.findById(inquiryId);
-    if (!inquiry) return res.status(404).json({ message: "Inquiry not found" });
+    if (!inquiry) {
+      return res.status(404).json({ message: "Inquiry not found" });
+    }
 
-    inquiry.status = status; // update status
+    inquiry.reply = replyMessage;
+    inquiry.status = "replied"; // You can set status to whatever you like: "replied", "handled", etc.
+
     await inquiry.save();
 
-    res.json({ message: "Inquiry status updated", inquiry });
+    res.status(200).json({
+      message: "Inquiry replied successfully",
+      inquiry,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Failed to update inquiry status", error });
+    res.status(500).json({ message: "Failed to reply to inquiry", error });
   }
 };
+
