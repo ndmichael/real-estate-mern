@@ -33,6 +33,8 @@ const PropertyDetail = () => {
     dispatch(fetchPropertyById(id));
   }, [dispatch, id]);
 
+  console.log("Properties details: ", property)
+
   useEffect(() => {
     if (!user) {
       navigate("/login");  // Redirect to login page if user is not authenticated
@@ -186,9 +188,26 @@ const PropertyDetail = () => {
               Contact Agent
             </Typography>
             <Divider sx={{ mb: 2 }} />
-            <Typography variant="body2" mb={2}>
+            {/* <Typography variant="body2" mb={2}>
               Contact the agent for more info or to book a viewing.
-            </Typography>
+            </Typography> */}
+             {property.agent ? (
+              <Stack spacing={1} mb={2}>
+                <Typography variant="body1" fontWeight="bold">
+                  {property.agent.fullName}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {property.agent.agentDetails?.companyName || "No company specified"}
+                </Typography>
+                <Typography variant="body2" mt={1}>
+                  Contact the agent for more info or to book a viewing.
+                </Typography>
+              </Stack>
+            ) : (
+              <Typography variant="body2" mb={2}>
+                No agent assigned to this property.
+              </Typography>
+            )}
             <Button
               fullWidth
               variant="contained"
