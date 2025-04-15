@@ -35,7 +35,7 @@ const AgentList = () => {
     >
     <Box>
       <Typography variant="h4" component="h1" gutterBottom fontWeight="bold">
-        Verified Agents
+        All Agents
       </Typography>
 
       {loading && (
