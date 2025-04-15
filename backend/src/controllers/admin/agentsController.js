@@ -15,8 +15,8 @@ export const verifyAgent = async (req, res) => {
   const agent = await User.findById(req.params.id);
   if (!agent || agent.role !== "agent") return res.status(404).json({ message: "Agent not found" });
 
-  agent.verified = !agent.verified;
+  agent.isVerified = !agent.isVerified;
   await agent.save();
 
-  res.json({ message: `Agent ${agent.verified ? "verified" : "unverified"}` });
+  res.json({ message: `Agent ${agent.isVerified ? "verified" : "unverified"}` });
 };
