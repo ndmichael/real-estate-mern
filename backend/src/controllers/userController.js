@@ -16,8 +16,6 @@ export const updateUserProfile = async (req, res) => {
     const image = req.file
     const uploadedImage = image ? await uploadImages(image) : null;
 
-    // console.log("Req file: ", uploadedImage);
-
     const userId = req.user.id; // or however you store auth
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -46,7 +44,8 @@ export const getVerifiedAgents = async (req, res) => {
   const skip = (page - 1) * limit;
 
   const [agents, total] = await Promise.all([
-    User.find({ role: "agent", isVerified: true })
+    // User.find({ role: "agent", isVerified: true })
+    User.find({ role: "agent"})
       .sort({ createdAt: -1 }) 
       .skip(skip)
       .limit(limit)
