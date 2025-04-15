@@ -21,7 +21,7 @@ export const verifyAgent = createAsyncThunk(
       const token = getState().auth.user.token;
       return await adminService.verifyAgent(agentId, token);
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to delete user');
+      return rejectWithValue(err.response?.data?.message || 'Failed to verify agent');
     }
   }
 );
