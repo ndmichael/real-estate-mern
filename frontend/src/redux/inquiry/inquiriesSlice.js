@@ -17,7 +17,8 @@ export const fetchAllInquiries = createAsyncThunk(
 
 export const createInquiry = createAsyncThunk(
   "inquiries/createInquiry",
-  async ({inquiryData}, { rejectWithValue, getState }) => {
+  async (inquiryData, { rejectWithValue, getState }) => {
+    console.log("Inquiry data: ", inquiryData)
     try {
       const token = getState().auth.user.token;
       return await inquiryService.createInquiry(inquiryData, token)
