@@ -1,18 +1,7 @@
 // redux/inquiriesSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import inquiryService from "./inquiryService";
-
-// Thunks
-export const fetchAllInquiries = createAsyncThunk(
-  "inquiries/fetchAllInquiries",
-  async (_, { rejectWithValue, getState }) => {
-    try {
-      const token = getState().auth.user.token;
-      return await inquiryService.fetchAllInquiries(token)
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch your stats');
-  }
-});
+import { toast } from "react-toastify";
 
 
 export const createInquiry = createAsyncThunk(
@@ -21,8 +10,12 @@ export const createInquiry = createAsyncThunk(
     console.log("Inquiry data: ", inquiryData)
     try {
       const token = getState().auth.user.token;
-      return await inquiryService.createInquiry(inquiryData, token)
+      
+      const result = await inquiryService.createInquiry(inquiryData, token);
+      toast.success(" Message has been sent.");
+      return result;
     } catch (error) {
+      toast.error(error.response.data.message)
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch your stats');
   }
 });
@@ -32,7 +25,8 @@ export const fetchAgentInquiries = createAsyncThunk(
   async (agentId, { getState, rejectWithValue }) => {
     try {
       const token = getState().auth.user.token;
-      return await inquiryService.fetchAgentInquiries(token, agentId);
+      const res=  await inquiryService.fetchAgentInquiries(token, agentId);
+      return res;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch agent inquiries');
     }
@@ -41,10 +35,10 @@ export const fetchAgentInquiries = createAsyncThunk(
 
 export const replyToInquiry = createAsyncThunk(
   'inquiries/replyToInquiry',
-  async ({ id, reply }, { getState, rejectWithValue }) => {
+  async ({ inquiryId, replyMessage }, { getState, rejectWithValue }) => {
     try {
       const token = getState().auth.user.token;
-      return await inquiryService.replyToInquiry({ id, reply }, token);
+      return await inquiryService.replyToInquiry({ inquiryId, replyMessage }, token);
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to send reply');
     }
@@ -61,18 +55,6 @@ const inquiriesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllInquiries.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchAllInquiries.fulfilled, (state, action) => {
-        state.loading = false;
-        state.inquiries = action.payload;
-      })
-      .addCase(fetchAllInquiries.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
-
       // create inquiry
       .addCase(createInquiry.pending, (state) => {
         state.loading = true;
@@ -95,6 +77,7 @@ const inquiriesSlice = createSlice({
       })
       .addCase(fetchAgentInquiries.rejected, (state, action) => {
         state.loading = false;
+        state.inquiries = [];
         state.error = action.payload;
       })
 
