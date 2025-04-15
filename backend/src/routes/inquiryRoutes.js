@@ -4,7 +4,7 @@ import {
     createInquiry, 
     getClientInquiries, 
     getAgentInquiries, 
-    updateInquiryStatus 
+    replyToInquiry
 } from "../controllers/inquiry/propertyInquiry.js";
 
 const router = express.Router();
@@ -19,6 +19,6 @@ router.get("/client/:clientId", getClientInquiries);
 router.get("/agent/:agentId", getAgentInquiries);
 
 // Update inquiry status (e.g., 'pending' to 'replied')
-router.patch("/:id/status", updateInquiryStatus);
+router.put("/reply/:id", replyToInquiry);
 
 export default router;
