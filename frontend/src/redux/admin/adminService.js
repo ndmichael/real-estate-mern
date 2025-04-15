@@ -52,7 +52,9 @@ const getUnverifiedAgents = async (token) =>{
 
 // Verify agent
 const verifyAgent = async (id, token) => {
-  const res = await axios.put(`${BASE_URL}/agents/verify/${id}`, {
+  const res = await axios.patch(`${BASE_URL}/agents/verify/${id}`, 
+    {},
+    {
     headers: {
       Authorization: `Bearer ${token}`,
     },
