@@ -33,6 +33,20 @@ export const fetchAgentInquiries = createAsyncThunk(
   }
 );
 
+export const fetchClientInquiries = createAsyncThunk(
+  'inquiries/fetchClientInquiries',
+  async (clientId, { getState, rejectWithValue }) => {
+    try {
+      const token = getState().auth.user.token;
+      const data = await inquiryService.fetchClientInquiries(token, clientId);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch inquiries');
+    }
+  }
+);
+
+
 export const replyToInquiry = createAsyncThunk(
   'inquiries/replyToInquiry',
   async ({ inquiryId, replyMessage }, { getState, rejectWithValue }) => {
@@ -68,6 +82,7 @@ const inquiriesSlice = createSlice({
         state.error = action.error.message;
       })
 
+      // fetch agents inquiry
       .addCase(fetchAgentInquiries.pending, (state) => {
         state.loading = true;
       })
@@ -80,6 +95,20 @@ const inquiriesSlice = createSlice({
         state.inquiries = [];
         state.error = action.payload;
       })
+
+      // fetch clients inquiry
+      .addCase(fetchClientInquiries.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchClientInquiries.fulfilled, (state, action) => {
+        state.loading = false;
+        state.inquiries = action.payload;
+      })
+      .addCase(fetchClientInquiries.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      
 
       // Reply to Inquiry
     .addCase(replyToInquiry.pending, (state) => {
