@@ -3,6 +3,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 
+
 const CustomAppBar = ({ title }) => {
   const { user } = useSelector((state) => state.auth); // Get user from Redux
 
