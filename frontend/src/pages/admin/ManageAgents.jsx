@@ -92,7 +92,6 @@ const ManageAgents = () => {
             rows={agents || []}
             columns={columns}
             getRowId={(row) => row._id}
-            autoHeight
             pageSize={10}
             rowsPerPageOptions={[10, 20, 50]}
             sx={{
