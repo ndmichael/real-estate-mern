@@ -1,14 +1,31 @@
-import { useState } from "react";
-import { Box, Typography,  Button, Card, CardContent } from "@mui/material";
+import { useEffect } from "react";
+import { Box, Typography,  Button, CircularProgress } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { Chat, Star, FormatListBulletedOutlined, Visibility } from "@mui/icons-material";
-import DashboardLayout from "../../layouts/DashboardLayout";
 import DashboardCard from "../../components/dashboard/DashboardCard";
 
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAgentStats } from "../../redux/agentSlice";
+
 const AgentDashboard = () => {
-  const [listings, setListings] = useState({ free: 3, featured: 2, total: 5 });
-  const [leads, setLeads] = useState(8);
-  const [views, setViews] = useState(1200);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const { stats, loading } = useSelector((state) => state.agent);
+
+  console.log("stats: ", stats)
+
+  useEffect(() => {
+    dispatch(fetchAgentStats(user.user._id));
+  }, [dispatch, user]);
+
+
+  if (loading || !stats) {
+    return (
+      <Box p={3} display="flex" justifyContent="center">
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <>
@@ -22,7 +39,7 @@ const AgentDashboard = () => {
           <Grid size={{xs:12, sm:6, md:3}}>
             <DashboardCard 
                 title="Total Listings"
-                count={listings.total} // Dynamic
+                count={stats.totalProperties} // Dynamic
                 icon={<FormatListBulletedOutlined />}
                 link="/agent/dashboard"
                 backgroundColor="#f5f5f5"
@@ -32,7 +49,7 @@ const AgentDashboard = () => {
           <Grid size={{xs:12, sm:6, md:3}}>
             <DashboardCard 
                 title="Featured Listings"
-                count={listings.featured} // Dynamic
+                count={stats.totalProperties} // Dynamic
                 icon={<Star />}
                 link="/agent/dashboard"
                 backgroundColor= "#e0f7fa"
@@ -42,7 +59,7 @@ const AgentDashboard = () => {
           <Grid size={{xs:12, sm:6, md:3}}>
             <DashboardCard
                 title="Leads & Messages"
-                count={leads} // Dynamic
+                count={stats.totalInquiries} // Dynamic
                 icon={<Chat />}
                 link="/agent/dashboard"
                 backgroundColor= "#fbe9e7"
@@ -52,7 +69,7 @@ const AgentDashboard = () => {
           <Grid size={{xs:12, sm:6, md:3}}>
             <DashboardCard 
                 title="Total Views"
-                count={views} // Dynamic
+                count={800} // Dynamic
                 icon={<Visibility />}
                 link="/agent/dashboard"
                 backgroundColor="#fff3e0"
