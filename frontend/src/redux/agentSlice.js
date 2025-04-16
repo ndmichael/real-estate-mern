@@ -16,10 +16,29 @@ export const fetchVerifiedAgents = createAsyncThunk(
   }
 );
 
+// redux/agentSlice.js
+
+export const fetchAgentStats = createAsyncThunk(
+  "agent/fetchStats",
+  async (agentId, { getState, rejectWithValue }) => {
+    try {
+      const token = getState().auth.user.token;
+      const res = await axios.get(`${BASE_URL}/agent/stats/${agentId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || "Failed to fetch stats");
+    }
+  }
+);
+
+
 const agentSlice = createSlice({
   name: 'agent',
   initialState: {
     agents: [],
+    stats: {},
     total: 0,
     loading: false,
     error: null,
@@ -44,6 +63,19 @@ const agentSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchVerifiedAgents.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // fetch agent stats
+      .addCase(fetchAgentStats.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAgentStats.fulfilled, (state, action) => {
+        state.loading = false;
+        state.stats = action.payload;
+      })
+      .addCase(fetchAgentStats.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
