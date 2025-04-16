@@ -10,6 +10,7 @@ import userRoutes from "./routes/userRoutes.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import inquiryRoutes from "./routes/inquiryRoutes.js";
+import agentRoutes from "./routes/agentRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -29,5 +30,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/inquiry", inquiryRoutes);
+app.use("/api/agent", agentRoutes);
 
 export default app;
