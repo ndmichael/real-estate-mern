@@ -16,6 +16,7 @@ import {
   ListItemText,
   IconButton,
   Divider,
+  Tooltip
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon,
@@ -88,10 +89,17 @@ const Sidebar = ({ role }) => {
       <Divider />
       <List>
         {menuItems[role]?.map((item) => (
-          <ListItem button key={item.text} component={Link} to={item.path}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            {isOpen && <ListItemText primary={item.text} />}
-          </ListItem>
+          <Tooltip
+            key={item.text}
+            title={!isOpen ? item.text : ""}
+            placement="right"
+            arrow
+          >
+            <ListItem button key={item.text} component={Link} to={item.path}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              {isOpen && <ListItemText primary={item.text} />}
+            </ListItem>
+          </Tooltip>
         ))}
       </List>
       <Divider />
