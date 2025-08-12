@@ -93,14 +93,14 @@ const Listings = () => {
       </Box>
 
       {/* Grid of Listings */}
-      <Grid container spacing={6}>
+      <Grid container spacing={3}>
         {filteredProperties.map((property) => {
           const isWishlisted = wishlist.includes(property._id);
           const isWishlistLoading = loadingIds.includes(property._id);
 
           return(
             <Grid 
-              size={{xs:12, sm:6, md:4}} 
+              size={{xs:12, sm:6, md:3}} 
               key={property.id}
               sx={{ 
                 position: 'relative'
