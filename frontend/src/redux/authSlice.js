@@ -3,7 +3,11 @@ import axios from "axios";
 
 import { toast } from "react-toastify";
 
-const BASE_URL = "http://localhost:5000/api";
+// const BASE_URL = "http://localhost:5000/api";
+const BASE_URL =
+  import.meta.env.MODE === "production"
+    ? "https://real-estate-mern-li5w.onrender.com/api"
+    : "http://localhost:5000/api";
 
 // Async Thunks for Register, Login, Logout
 export const registerUser = createAsyncThunk("auth/registerUser", async (userData, { rejectWithValue }) => {

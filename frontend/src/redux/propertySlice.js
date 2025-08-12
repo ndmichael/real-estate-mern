@@ -2,11 +2,16 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from "react-toastify";
 
+const BASE_URL =
+  import.meta.env.MODE === "production"
+    ? "https://real-estate-mern-li5w.onrender.com/api"
+    : "http://localhost:5000/api";
+
 export const fetchProperties = createAsyncThunk(
     'property/fetchProperties',
     async (_, { rejectWithValue }) => {
       try {
-        const response = await axios.get('http://localhost:5000/api/properties');
+        const response = await axios.get(`${BASE_URL}/properties`);
         return response.data;
       } catch (error) {
         return rejectWithValue(error.response?.data?.message || 'Failed to fetch properties');

@@ -2,7 +2,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5000/api';
+// const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL =
+  import.meta.env.MODE === "production"
+    ? "https://real-estate-mern-li5w.onrender.com/api"
+    : "http://localhost:5000/api";
 
 export const fetchVerifiedAgents = createAsyncThunk(
   'agent/fetchVerifiedAgents',
