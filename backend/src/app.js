@@ -23,6 +23,10 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
 
+app.get("/", (req, res) => {
+  res.send("Backend API is running.");
+});
+
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/properties", propertyRoutes);
