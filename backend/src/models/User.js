@@ -161,7 +161,6 @@ UserSchema.virtual('yearsInBusiness').get(function() {
 });
 
 // Indexes for better query performance
-UserSchema.index({ email: 1 });
 UserSchema.index({ role: 1 });
 UserSchema.index({ 'agentDetails.specialties': 1 });
 UserSchema.index({ 'agentDetails.serviceAreas': 1 });
