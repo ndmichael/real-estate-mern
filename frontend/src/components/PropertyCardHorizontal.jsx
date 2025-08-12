@@ -102,7 +102,7 @@ const PropertyCardHorizontal = ({
 
         {/* Price & View More */}
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 1 }}>
-          <Typography variant="h6" color="green" sx={{ fontSize: "1rem" }}>
+          <Typography variant="h6" color="green" sx={{ fontSize: ".85rem", fontWeight: "bold" }}>
             NGN {property.price.toLocaleString()}
           </Typography>
           <Button
@@ -112,7 +112,7 @@ const PropertyCardHorizontal = ({
             size="small"
             endIcon={<ArrowForwardIcon />}
             className="view-more"
-            sx={{ opacity: 0, transition: "opacity 0.3s" }}
+            sx={{ opacity: 0, transition: "opacity 0.3s", fontSize: ".75rem" }}
           >
             View More
           </Button>
