@@ -35,7 +35,7 @@ const SearchBar = ({ showTabs = true }) => {
   
 
   return (
-    <Box sx={{ bgcolor: "rgba(255,255,255,0.2)", p: 4, borderRadius: 2 }}>
+    <Box sx={{ bgcolor: "rgba(255,255,255,0.15)", p: 7, borderRadius: 7, backdropFilter:"blur(2px)" }}>
       {/* Tabs */}
       {showTabs && 
       (<Tabs
@@ -87,6 +87,20 @@ const SearchBar = ({ showTabs = true }) => {
               fontWeight: "bold",
               '&:hover': { bgcolor: '#136338' }
             }}
+
+            // sx={{
+            //   backgroundColor: "rgba(70, 140, 90, 0.85)",
+            //   width: "100%",
+            //   height: "100%",
+            //   borderRadius: "30px",
+            //   px: 4,
+            //   py: 1.5,
+            //   fontWeight: "bold",
+            //   letterSpacing: 1,
+            //   "&:hover": {
+            //     backgroundColor: "rgba(50, 100, 70, 0.9)",
+            //   },
+            // }}
           >
             Search
           </Button>
