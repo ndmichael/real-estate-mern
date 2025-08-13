@@ -22,7 +22,7 @@ app.use(express.json());
 
 const allowedOrigins =
   process.env.NODE_ENV === "production"
-    ? ["https://real-estate-mern-li5w.onrender.com"] // production
+    ? ["https://real-estate-mern-psi.vercel.app"] // production
     : ["http://localhost:5173"]; // local dev
 
 app.use(
