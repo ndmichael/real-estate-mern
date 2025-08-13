@@ -40,7 +40,7 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar position="sticky" sx={{ background: "#f5f5f5", color: "black" }}>
+      <AppBar position="sticky" sx={{ background: 'rgb(255, 253, 231)' , color: "black" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           {/* Left Section: Logo & Links */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -96,7 +96,11 @@ const Navbar = () => {
       <Drawer anchor="right" open={mobileOpen} onClose={handleDrawerToggle}>
         <Box sx={{ width: 250 }}>
           {/* Close Button */}
-          <IconButton sx={{ display: "flex", justifyContent: "flex-end", p: 2 }} onClick={handleDrawerToggle}>
+          <IconButton 
+            sx={{ display: "flex", 
+            justifyContent: "flex-end", p: 2 }} 
+            onClick={handleDrawerToggle}
+          >
             <CloseIcon />
           </IconButton>
 
@@ -109,6 +113,7 @@ const Navbar = () => {
                     component={Link} 
                     to={item.path} 
                     primary={item.name} 
+                    style={{ textDecoration: "none", color: "inherit" }}
                   />
                 </ListItemButton>
               </ListItem>
@@ -127,10 +132,21 @@ const Navbar = () => {
           </Button>)
           :
           (<Box sx={{ textAlign: "center", mt: 2 }}>
-            <Button variant="outlined" color="success" fullWidth sx={{ mb: 1 }}>
+            <Button 
+              variant="outlined" 
+              color="success" 
+              fullWidth sx={{ mb: 1 }}
+              component={Link} 
+              to="/login"
+            >
               Login
             </Button>
-            <Button variant="contained" color="success" fullWidth>
+            <Button 
+              variant="contained" 
+              color="success" fullWidth
+              component={Link} 
+              to="/signup"
+            >
               Sign Up
             </Button>
           </Box>)
