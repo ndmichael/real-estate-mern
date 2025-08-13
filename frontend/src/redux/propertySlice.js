@@ -34,7 +34,7 @@ export const fetchProperties = createAsyncThunk(
         };
   
         // Make the GET request to the backend endpoint
-        const response = await axios.get('http://localhost:5000/api/properties/my-listings', config);
+        const response = await axios.get(`${BASE_URL}/properties/my-listings`, config);
         console.log("Fetched Properties from API:", response.data);
         return response.data;
       } catch (error) {
@@ -49,7 +49,7 @@ export const fetchProperties = createAsyncThunk(
         "properties/fetchById",
         async (id, { rejectWithValue }) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/properties/${id}`);
+            const response = await fetch(`${BASE_URL}/properties/${id}`);
             if (!response.ok) throw new Error("Failed to fetch property");
             return await response.json();
         } catch (error) {
@@ -72,7 +72,7 @@ export const fetchProperties = createAsyncThunk(
             Authorization: `Bearer ${token}`,
           },
         };
-        const response = await axios.post('http://localhost:5000/api/properties', propertyData, config);
+        const response = await axios.post(`${BASE_URL}/properties`, propertyData, config);
         toast.success("Property Added !");
         return response.data;
       } catch (error) {
@@ -95,7 +95,7 @@ export const fetchProperties = createAsyncThunk(
             Authorization: `Bearer ${token}`,
           },
         };
-        const response = await axios.put(`http://localhost:5000/api/properties/${id}`, propertyData, config);
+        const response = await axios.put(`${BASE_URL}/properties/${id}`, propertyData, config);
         toast.success("Property updated successfully!");
 
         return response.data;
@@ -121,7 +121,7 @@ export const fetchProperties = createAsyncThunk(
           },
         };
 
-        await axios.delete(`http://localhost:5000/api/properties/${id}`, config);
+        await axios.delete(`${BASE_URL}/properties/${id}`, config);
         toast.error("Property deleted successfully !");
         return id;
       } catch (error) {
