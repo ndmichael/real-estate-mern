@@ -103,9 +103,13 @@ const Navbar = () => {
           {/* Drawer Menu */}
           <List>
             {navItems.map((item) => (
-              <ListItem key={item} disablePadding>
+              <ListItem key={item.name} disablePadding>
                 <ListItemButton onClick={handleDrawerToggle}>
-                  <ListItemText primary={item} />
+                  <ListItemText 
+                    component={Link} 
+                    to={item.path} 
+                    primary={item.name} 
+                  />
                 </ListItemButton>
               </ListItem>
             ))}
