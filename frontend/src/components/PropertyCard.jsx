@@ -8,7 +8,7 @@ const PropertyCard = ({ property }) => {
   return (
     <Card 
       component={Link}
-      to={`/property/${property.id}`}
+      to={`/property/${property._id}`}
       sx={{ 
           display: "flex", 
           flexDirection: { xs: "column", sm: "row" }, 
