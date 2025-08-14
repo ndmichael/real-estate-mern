@@ -35,7 +35,7 @@ const SearchBar = ({ showTabs = true }) => {
   
 
   return (
-    <Box sx={{ bgcolor: "rgba(255,255,255,0.15)", p: 7, borderRadius: 7, backdropFilter:"blur(2px)" }}>
+    <Box sx={{ bgcolor: "rgba(255,255,255,0.15)", p: 5, mx:"auto", borderRadius: 7, backdropFilter:"blur(2px)" }}>
       {/* Tabs */}
       {showTabs && 
       (<Tabs
@@ -43,9 +43,10 @@ const SearchBar = ({ showTabs = true }) => {
         onChange={(e, newValue) => setSearchType(newValue)}
         textColor="inherit"
         indicatorColor="primary"
+        variant="fullWidth"
 
         sx={{
-            background: "rgba(0, 69, 41, 0.2)",
+            background: "rgba(0, 69, 41, 0.35)",
             borderRadius: 2,
             mb: 3,
             width: { xs: "100%" },
