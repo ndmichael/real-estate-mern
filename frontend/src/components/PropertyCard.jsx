@@ -42,7 +42,7 @@ const PropertyCard = ({ property }) => {
             {property.location.city}, Nigeria
           </Typography>
           <Typography variant="h6" color="success" sx={{ mt: 1 }}>
-            NGN{property.price}
+            NGN{property.price.toLocaleString()}
           </Typography>
         </Box>
 
