@@ -45,6 +45,7 @@ const PropertyCardHorizontal = ({
       {/* Property Image with Like Button Overlay */}
       <Box sx={{ position: "relative", overflow: "hidden" }}>
         <CardMedia
+          component="img"
           className="property-image"
           sx={{ 
             height: 220, 
@@ -52,8 +53,12 @@ const PropertyCardHorizontal = ({
             width: "100%", 
             transition: "transform 0.3s ease-in-out" 
           }}
-          image={property.images[0]}
+          image={property.images[0] || "/images/default1-property.jpg"}
           alt={property.title}
+          onError={(e) => {
+            e.target.onerror = null; // avoid infinite loop
+            e.target.src = "/images/default1-property.jpg";
+          }}
         />
         
         {/* Wishlist Icon */}
